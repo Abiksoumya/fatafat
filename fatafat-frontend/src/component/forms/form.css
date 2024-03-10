@@ -1,0 +1,15 @@
+.login-form {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.p-field {
+  margin-bottom: 1rem;
+}
+
+.p-inputtext {
+  width: 100%;
+}

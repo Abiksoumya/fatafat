@@ -1,0 +1,95 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id String @id @default(cuid()) @unique
+  name  String?
+  userId String @unique
+  createdAt DateTime  @default(now()) @db.Timestamptz(3)
+  role String
+  margin Int
+  ntp Decimal
+  isActive Boolean @default(true)
+  createdBy String
+  password String
+  balance Decimal @default(0)
+
+  transaction Transactions[] @relation("main")
+  otherTransaction Transactions[] @relation("other")
+  
+  bets PointBets[]
+  pattiBets PattiBets[]
+
+  ntpHistory NtpHistory[]
+}
+
+model NtpHistory {
+  id String @id @default(cuid()) @unique
+  userId String
+  ntp Decimal
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+
+  userIds User @relation(fields: [userId], references: [userId])
+}
+
+model Transactions{
+  id String @id @default(cuid()) @unique
+  userId String
+  otherId String
+  point Int 
+  type String
+  balance Decimal
+  timestamp DateTime @default(now()) @db.Timestamptz(3)
+
+  otherUser User @relation("other",fields: [otherId], references: [userId])
+  user User @relation("main",fields: [userId], references: [userId])
+
+}
+
+model Result{
+  id String @id @default(cuid()) @unique
+  timestamp DateTime  @default(now()) @db.Timestamptz(3)
+  winNnumber Int
+  winPatti Int
+  slot Int
+}
+
+
+model PointBets{
+  id String @id @default(cuid()) @unique
+  ticketNo String
+  userId String
+  point Int
+  betPoint Int
+  isActive Boolean
+  slot Int
+  reward Decimal @default(0)
+
+  timestamp DateTime  @default(now()) @db.Timestamptz(3)
+  status String
+  user User @relation(fields: [userId], references: [userId])  
+}
+
+model PattiBets{
+  id String @id @default(cuid()) @unique
+  ticketNo String
+  userId String
+  patti String
+  betPoint Int
+  isActive Boolean
+  slot Int
+  reward Decimal @default(0)
+  
+  timestamp DateTime  @default(now()) @db.Timestamptz(3)
+  status String
+  user User @relation(fields: [userId], references: [userId])  
+}
+// schema.prisma
+
+// Define the Users table

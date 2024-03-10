@@ -1,0 +1,14 @@
+.patti-table {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto auto auto auto auto auto;
+}
+
+.patti-cell {
+  border: 2px solid #374151;
+}
+
+h3,
+h4,
+h5 {
+  text-align: center;
+}
