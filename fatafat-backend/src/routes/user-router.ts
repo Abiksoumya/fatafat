@@ -14,6 +14,7 @@ import { getUserDetailsHandler } from "../handler/user/get-user-details";
 import { createPointBet } from "../handler/user/create-point-bet";
 import { createPattiBet } from "../handler/user/create-patti-bet";
 import { declareResult } from "../handler/result/declare.result";
+import { getResultsHandler } from "../handler/transaction/get-result-handler";
 
 const userRouter = express.Router();
 
@@ -21,6 +22,8 @@ const userRouter = express.Router();
 //userRouter.get("/all-users");
 userRouter.post("/create-super-admin", createSuperAdmin());
 userRouter.post("/login", loginUserHandler());
+userRouter.get("/allResult", getResultsHandler());
+
 
 userRouter.use(verifyUser());
 //userRouter.use(verifyStokez());

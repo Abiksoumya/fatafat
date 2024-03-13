@@ -8,10 +8,14 @@ import Result from "../../model/result.model";
 export function declareResult() {
   return async (req: Request, res: Response) => {
 
-    const winNumber = req.body.winNumber;
-    const winPatti = req.body.patti;
+    const winSinglePatti = req.body.winSinglePatti;
+    const winThreePatti = req.body.winThreePatti;
     const slot = req.body.slot;
-    console.log(req.body.patti)
+    console.log(winSinglePatti,winThreePatti)
+
+    const totalPoint = winSinglePatti ? winSinglePatti : 0 * 9 + winThreePatti ? winThreePatti : 0 * 100
+
+    console.log(totalPoint)
 
     try {
       const user = await User.findOne({ userId: res.locals.userId });
@@ -26,11 +30,23 @@ export function declareResult() {
         throw new Error("Stokez user not found");
       }
 
-      const patti = await PattiBet.findOne({ patti:winPatti});
+      if(winSinglePatti ==  !null){
+        const singlepatti = await PattiBet.findOne({ patti:winSinglePatti});
 
-      if (!patti) {
+      if (!singlepatti) {
         throw new Error("No bets on this Patti Number");
       }
+      }
+
+      if(winThreePatti == !null){
+        const threepatti = await PattiBet.findOne({ patti:winThreePatti});
+
+      if (!threepatti) {
+        throw new Error("No bets on this Patti Number");
+      }
+      }
+
+      
 
       // Start transaction
       const session = await User.startSession();
@@ -38,24 +54,14 @@ export function declareResult() {
 
       try {
         // Create bet
-        if(winPatti.length == 3){
-            const totalAmount = winNumber * 100
             await Result.create({
-                winNumber:totalAmount ,
-                winPatti: winPatti,
+              winSinglePatti:winSinglePatti ,
+              winThreePatti: winThreePatti,
                 slot: slot,
                 user:user._id
             });
-        }
-        const totalAmount = winNumber * 9
-
-        await Result.create({
-
-            winNumber: totalAmount,
-            winPatti: winPatti,
-            slot: slot,
-            user:user._id
-        });
+        
+        
        
         
 
@@ -64,8 +70,8 @@ export function declareResult() {
           { userId: res.locals.userId },
           {
             $inc: {
-              ntp: winNumber - winNumber * (user.margin ?? 0) * 0.01,
-              balance: -winNumber,
+              ntp: totalPoint - totalPoint * (user.margin ?? 0) * 0.01,
+              balance: -totalPoint,
             },
           },
           { new: true }
@@ -76,8 +82,8 @@ export function declareResult() {
           { userId: user.createdBy },
           {
             $inc: {
-              balance: winNumber * (stokez.margin ?? 0) * 0.01,
-              ntp: winNumber * (stokez.margin ?? 0) * 0.01,
+              balance: totalPoint * (stokez.margin ?? 0) * 0.01,
+              ntp: totalPoint * (stokez.margin ?? 0) * 0.01,
             },
           },
           { new: true }
@@ -88,14 +94,14 @@ export function declareResult() {
           {
             userId: res.locals.userId,
             otherId: stokez.userId ?? "God",
-            point: winNumber,
+            point: totalPoint,
             balance: userUpdate.balance,
             type: "debit",
           },
           {
             userId: stokez.userId ?? "",
             otherId: res.locals.userId,
-            point: winNumber * (stokez.margin ?? 0) * 0.01,
+            point: totalPoint * (stokez.margin ?? 0) * 0.01,
             balance: stokezUpdate.balance,
             type: "credit",
           },

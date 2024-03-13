@@ -8,6 +8,7 @@ import { resetAndBackupNTP } from "./job/backup-and-reset-ntp";
 import { connect } from "mongoose";
 // import { DB, PORT, app } from "./app";
 import { config } from "dotenv";
+import result from "./routes/result.router";
 config();
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/user", userRouter);
 app.use("/transaction", transRouter);
+
 
 const PORT = 5000;
 const DB = 'mongodb+srv://soumyamohanty540:w0NXkYtEv2MTf8L2@cluster0.qlof1tt.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0'

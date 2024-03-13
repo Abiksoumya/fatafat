@@ -3,18 +3,18 @@ import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 // Define interface for Result document
 interface IResult extends Document {
   timestamp: Date;
-  winNumber: number;
-  winPatti: number;
-  slot: number;
+  winSinglePatti: number;
+  winThreePatti: number;
+  slot: String;
   user:Types.ObjectId
 }
 
 // Define Result schema
 const resultSchema: Schema<IResult> = new Schema({
   timestamp: { type: Date, default: Date.now },
-  winNumber: Number,
-  winPatti: Number,
-  slot: Number,
+  winSinglePatti: Number,
+  winThreePatti: Number,
+  slot: { type: String, required: true },
   user:{
     type: Schema.Types.ObjectId,
     ref: "User",
