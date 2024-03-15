@@ -234,3 +234,15 @@ export const PATTIS = [
   "921",
   "922",
 ];
+export const SINGLE_PATTIS = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+ 
+];

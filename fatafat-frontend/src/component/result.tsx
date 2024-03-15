@@ -2,14 +2,14 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { PATTIS } from "../helper/constants";
+import { PATTIS, SINGLE_PATTIS } from "../helper/constants";
 import { slots } from "../helper/constants";
 
 import { useDeclareResult } from "../mutation/result.mutation";
 import { InputNumber } from "primereact/inputnumber";
 export type ResultFormData = {
-  winNumber: number;
-  patti: string
+  winSinglePatti: number;
+  winThreePatti: number
   slot:any
 };
 
@@ -20,7 +20,7 @@ export const Result = () => {
   const resultMutation = useDeclareResult();
 
   const submitForm: SubmitHandler<ResultFormData> = (data) => {
-    console.log("result form data: ", typeof(data.winNumber))
+    // console.log("result form data: ", typeof(data.winNumber))
     resultMutation.mutate(data);
   };
 
@@ -29,19 +29,19 @@ export const Result = () => {
       <form onSubmit={handleSubmit(submitForm)}>
         <div className="p-field">
         <div className="mt-2">
-  <label htmlFor="patti">Win Patti</label>
+  <label htmlFor="winSinglePatti">Win Single Patti</label>
   <br />
   <Controller
-    name="patti"
+    name="winSinglePatti"
     control={control}
     rules={{ required: true }}
     render={({ field }) => (
       <Dropdown
-        id="patti" // Update id to match htmlFor attribute of label
+        id="winSinglePatti" // Update id to match htmlFor attribute of label
         value={field.value}
-        optionLabel="patti"
-        placeholder="Select Patti"
-        options={PATTIS.map(patti => ({ patti: patti, value: patti }))}
+        optionLabel="winSinglePatti"
+        placeholder="Select Single Patti"
+        options={SINGLE_PATTIS.map(winSinglePatti => ({ winSinglePatti: winSinglePatti, value: winSinglePatti }))}
         focusInputRef={field.ref}
         onChange={(e) => field.onChange(e.value)}
         className="w-full mt-2"
@@ -51,23 +51,25 @@ export const Result = () => {
 </div>
 
 <div className="mt-3">
-            <label htmlFor="winNumber">Point</label>
+            <label htmlFor="winThreePatti">Win Three Patti</label>
             <br />
             <Controller
-              name="winNumber"
-              control={control}
-              defaultValue={0}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <InputNumber
-                  id="winNumber"
-                  value={field.value}
-                  onValueChange={(e) => field.onChange(e.value)}
-                  showButtons
-                  className="mt-3 w-full"
-                />
-              )}
-            />
+    name="winThreePatti"
+    control={control}
+    rules={{ required: true }}
+    render={({ field }) => (
+      <Dropdown
+        id="winThreePatti" // Update id to match htmlFor attribute of label
+        value={field.value}
+        optionLabel="winThreePatti"
+        placeholder="Select Three Patti"
+        options={PATTIS.map(winThreePatti => ({ winThreePatti: winThreePatti, value: winThreePatti }))}
+        focusInputRef={field.ref}
+        onChange={(e) => field.onChange(e.value)}
+        className="w-full mt-2"
+      />
+    )}
+  />
           </div>
 
           <div className="mt-3">
