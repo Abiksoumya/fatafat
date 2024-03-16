@@ -6,11 +6,11 @@ services:
     restart: unless-stopped
     image: dashboard-production:1.0.0
     build:
-      context: /fatafat-backend
-      target: builder
+      context: /fatafat-frontend
+      target: Production
       dockerfile: Dockerfile
     ports:
-      - 5174:5174
+      - 5173:5173
     networks:
       - shared-network
 networks:
