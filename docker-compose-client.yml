@@ -1,0 +1,17 @@
+version: "3.8"
+
+services:
+  dashboard:
+    container_name: dashboard
+    restart: unless-stopped
+    image: dashboard-production:1.0.0
+    build:
+      context: /fatafat-backend
+      target: builder
+      dockerfile: Dockerfile
+    ports:
+      - 5174:5174
+    networks:
+      - shared-network
+networks:
+  shared-network:

@@ -8,7 +8,6 @@ export function createPointBet() {
   return async (req: Request, res: Response) => {
     const point = req.body.point;
     const betPoint = req.body.betPoint;
-    const slot = req.body.slot;
 
 
     try {
@@ -40,7 +39,6 @@ export function createPointBet() {
           userId: res.locals.userId,
           point: point,
           betPoint: betPoint,
-          slot: slot,
           isActive: true,
           status: "pending",
           user:user._id
@@ -51,43 +49,42 @@ export function createPointBet() {
           { userId: res.locals.userId },
           {
             $inc: {
-              ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
-              balance: -betPoint,
+              balance: +betPoint,
             },
           },
           { new: true }
         );
 
         // Credit commission to stokez
-        const stokezUpdate = await User.findOneAndUpdate(
-          { userId: user.createdBy },
-          {
-            $inc: {
-              balance: betPoint * (stokez.margin ?? 0) * 0.01,
-              ntp: betPoint * (stokez.margin ?? 0) * 0.01,
-            },
-          },
-          { new: true }
-        );
+        // const stokezUpdate = await User.findOneAndUpdate(
+        //   { userId: user.createdBy },
+        //   {
+        //     $inc: {
+        //       balance: betPoint * (stokez.margin ?? 0) * 0.01,
+        //       ntp: betPoint * (stokez.margin ?? 0) * 0.01,
+        //     },
+        //   },
+        //   { new: true }
+        // );
 
         // Add transaction details
-        console.log("Transaction details",stokezUpdate)
-        await Transaction.create([
-          {
-            userId: res.locals.userId,
-            otherId: stokez.userId ?? "God",
-            point: betPoint,
-            balance: userUpdate.balance,
-            type: "debit",
-          },
-          {
-            userId: stokez.userId ?? "",
-            otherId: res.locals.userId,
-            point: betPoint * (stokez.margin ?? 0) * 0.01,
-            balance: stokezUpdate.balance,
-            type: "credit",
-          },
-        ]);
+        // console.log("Transaction details",stokezUpdate)
+        // await Transaction.create([
+        //   {
+        //     userId: res.locals.userId,
+        //     otherId: stokez.userId ?? "God",
+        //     point: betPoint,
+        //     balance: userUpdate.balance,
+        //     type: "debit",
+        //   },
+        //   {
+        //     userId: stokez.userId ?? "",
+        //     otherId: res.locals.userId,
+        //     point: betPoint * (stokez.margin ?? 0) * 0.01,
+        //     balance: stokezUpdate.balance,
+        //     type: "credit",
+        //   },
+        // ]);
 
         // Commit transaction
         await session.commitTransaction();

@@ -21,7 +21,6 @@ const pointBetSchema: Schema<IPointBet> = new Schema({
   point: Number,
   betPoint: Number,
   isActive: Boolean,
-  slot: Number,
   reward: { type: Number, default: 0 },
   timestamp: { type: Date, default: Date.now },
   status: String,
