@@ -8,10 +8,10 @@ export const RootLayout: React.FC = () => {
 
   const token = localStorage.getItem("token");
 
-  //   useEffect(() => {
-  //     if (!token) navigate("/login");
-  //     else navigate("/dashboard");
-  //   }, []);
+    useEffect(() => {
+      if (!token) navigate("/login");
+      else navigate("/");
+    }, []);
 
   return (
     <div>
