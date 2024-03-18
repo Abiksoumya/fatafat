@@ -65,7 +65,6 @@ export default function Dashboard() {
     },
   ];
 
-  console.log("data in dashboard",data);
   return (
     <div>
       <Menu model={menuItems} className="w-full md:w-15rem" />
