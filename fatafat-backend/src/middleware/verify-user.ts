@@ -19,6 +19,7 @@ export function verifyUser() {
     const token = extractToken(req);
     if (token !== null) {
       const userDetails: any = jwt.verify(token, PRIVATEKEY);
+      res.locals.id = userDetails.id;
       res.locals.userId = userDetails.userId;
       res.locals.role = userDetails.role;
       next();

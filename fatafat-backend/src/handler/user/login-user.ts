@@ -21,6 +21,7 @@ export function loginUserHandler() {
         // Password is correct
         // Sign the token
         const userPayload = {
+          id:user.id,
           userId: user.userId,
           role: user.role,
           verified: true,
