@@ -10,7 +10,7 @@ export function useLogin() {
     },
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
-      navigate("/");
+      navigate("/admin");
     },
     onError(error) {
       navigate("/result", { state: error });

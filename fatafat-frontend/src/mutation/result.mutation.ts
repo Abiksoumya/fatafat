@@ -10,10 +10,10 @@ export function useDeclareResult() {
       return declareResult(payload);
     },
     onSuccess: (data) => {
-      navigate("/result", { state: data });
+      navigate("/admin/all-users", { state: data });
     },
     onError: (data) => {
-      navigate("/result", { state: data });
+      navigate("/admin/all-users", { state: data });
     },
   });
 }

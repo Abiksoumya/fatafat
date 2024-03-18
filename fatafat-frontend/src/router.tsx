@@ -14,7 +14,7 @@ import { TransferPointForm } from "./component/forms/transfer-point-form";
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/admin",
     element: <RootLayout />,
     children: [
       {

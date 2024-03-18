@@ -15,43 +15,43 @@ export default function Dashboard() {
         {
           label: "Create User",
           command: () => {
-            navigate("/create-user");
+            navigate("/admin/create-user");
           },
         },
         {
           label: "All Users",
           command: () => {
-            navigate("/all-users");
+            navigate("/admin/all-users");
           },
         },
         {
           label: "Debit / Credit History",
-          command: () => navigate("/all-transactions"),
+          command: () => navigate("/admin/all-transactions"),
         },
         {
           label: "Number Wise Bet Point",
-          command: () => navigate("/number-wise-bet-point"),
+          command: () => navigate("/admin/number-wise-bet-point"),
         },
-        {
-          label: "All Point Bets",
-          command: () => navigate("/all-point-bets"),
-        },
+        // {
+        //   label: "All Point Bets",
+        //   command: () => navigate("/all-point-bets"),
+        // },
         {
           label: "All Patti Bets",
-          command: () => navigate("/all-patti-bets"),
+          command: () => navigate("/admin/all-patti-bets"),
         },
         {
           label: "Adjust Point",
-          command: () => navigate("/adjust-point"),
+          command: () => navigate("/admin/adjust-point"),
         },
         {
           label: "Transfer Point",
-          command: () => navigate("/transfer-point"),
+          command: () => navigate("/admin/transfer-point"),
 
         },
         {
           label: "Result",
-          command: () => navigate("/result"),
+          command: () => navigate("/admin/result"),
 
         },
         {

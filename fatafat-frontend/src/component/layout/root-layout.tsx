@@ -10,7 +10,7 @@ export const RootLayout: React.FC = () => {
 
     useEffect(() => {
       if (!token) navigate("/login");
-      else navigate("/");
+      else navigate("/admin");
     }, []);
 
   return (

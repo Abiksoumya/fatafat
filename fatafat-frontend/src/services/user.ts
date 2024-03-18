@@ -17,7 +17,10 @@ export async function loginUser(payload: LoginPayload) {
   });
 
   console.log("================================",res.data)
-  return res.data;
+  if(res.data) {
+    return res.data;
+
+  }
 }
 
 export async function getUserDetails() {
