@@ -6,6 +6,7 @@ interface IPattiBet extends Document {
   userId: string;
   patti: string;
   betPoint: number;
+  winBetPoint: number;
   isActive: boolean;
   slot: number;
   reward: number;
@@ -21,6 +22,7 @@ const pattiBetSchema: Schema<IPattiBet> = new Schema({
   userId: String,
   patti: String,
   betPoint: Number,
+  winBetPoint: Number,
   isActive: Boolean,
   slot: Number,
   reward: { type: Number, default: 0 },

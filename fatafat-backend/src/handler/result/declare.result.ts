@@ -15,7 +15,7 @@ export function declareResult() {
 
     const totalPoint = winSinglePatti ? winSinglePatti : 0 * 9 + winThreePatti ? winThreePatti : 0 * 100
 
-    console.log(totalPoint)
+    // console.log(totalPoint)
 
     try {
       const user = await User.findOne({ userId: res.locals.userId });
@@ -30,16 +30,31 @@ export function declareResult() {
         throw new Error("Stokez user not found");
       }
 
-      if(winSinglePatti ==  !null){
-        const singlepatti = await PattiBet.findOne({ patti:winSinglePatti});
+      if(winSinglePatti){
+        const singlepatti = await PattiBet.find({ patti: winSinglePatti, $or: [{ winBetPoint: { $exists: false } }, { winBetPoint: { $eq: null } }] });
+        console.log("patti data get by single patti",singlepatti)
+        const updatePromises = singlepatti.map(async (doc) => {
+          const updatedBetPoint = doc.betPoint * 9;
+          await PattiBet.updateOne({ _id: doc._id }, { winBetPoint: updatedBetPoint });
+      });
+
+      // Wait for all updates to complete
+      await Promise.all(updatePromises);
 
       if (!singlepatti) {
         throw new Error("No bets on this Patti Number");
       }
       }
 
-      if(winThreePatti == !null){
-        const threepatti = await PattiBet.findOne({ patti:winThreePatti});
+      if(winThreePatti){
+        const threepatti = await PattiBet.find({ patti:winThreePatti, $or: [{ winBetPoint: { $exists: false } }, { winBetPoint: { $eq: null } }]});
+        const updatePromises = threepatti.map(async (doc) => {
+          const updatedBetPoint = doc.betPoint * 100;
+          await PattiBet.updateOne({ _id: doc._id }, { winBetPoint: updatedBetPoint });
+      });
+
+      // Wait for all updates to complete
+      await Promise.all(updatePromises);
 
       if (!threepatti) {
         throw new Error("No bets on this Patti Number");
