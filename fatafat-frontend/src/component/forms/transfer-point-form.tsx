@@ -73,7 +73,7 @@ export const TransferPointForm = () => {
         Target User
       </label>
       <Dropdown
-  className="mt-2"
+  className="mt-2 w-full"
   id="userId"
   value={selectedUserId}
   options={userData?.map(user => ({ label: user?.name, value: user?.userId }))}

@@ -60,3 +60,8 @@ export async function declareResult(paylaod: ResultFormData) {
   const { data } = await http().post("/user/declare", paylaod);
   return data;
 }
+
+export async function getAllUsersReport() {
+  const { data } = await http().get("/user/getPointByUser");
+  return data;
+}
