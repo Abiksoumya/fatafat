@@ -27,6 +27,9 @@ export default function PointBetsTable() {
 
   return (
     <div className="card">
+      <button>
+        
+      </button>
       <DataTable header={header} value={data?.data}>
         <Column field="ticketNo" header="Ticket No"></Column>
         <Column field="userId" header="User Id"></Column>

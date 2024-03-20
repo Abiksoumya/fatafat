@@ -6,6 +6,8 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 import { InputNumber } from "primereact/inputnumber";
 import { useTransferPoint } from "../../mutation/transfer-point";
+import { useEffect, useState } from "react";
+import { useAllUsers } from "../../query/use-all-users";
 export type TransferPointFormData = {
   type: String;
   userId: string;
@@ -17,6 +19,10 @@ export const TransferPointForm = () => {
 
   const { register, handleSubmit, control } = useForm<TransferPointFormData>();
   const transferMutation = useTransferPoint();
+  const [userData, setUserData] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState('');
+
+  console.log("select value",selectedUserId)
 
   const types = [
     { name: "Credit", value: "credit" },
@@ -24,9 +30,18 @@ export const TransferPointForm = () => {
   ];
 
   const submitForm: SubmitHandler<TransferPointFormData> = (data) => {
-    console.log("transferMutation data: " + data)
-    transferMutation.mutate(data);
+    // console.log("transferMutation data: " + data.point)
+    const formData = { ...data, userId: selectedUserId };
+
+    transferMutation.mutate(formData);
   };
+
+  const allUsers = useAllUsers()
+
+
+  useEffect(() => {
+    setUserData(allUsers?.data?.data)
+  },[allUsers])
 
   return (
     <div className="login-form mt-4">
@@ -54,14 +69,20 @@ export const TransferPointForm = () => {
             />
           </div>
           <div className="p-field mt-4">
-            <label htmlFor="userId" className="mb-2">
-              Target User ID
-            </label>
-            <InputText
-              className="mt-2"
-              id="userId"
-              {...register("userId", { required: true })}
-            />
+          <label htmlFor="userId" className="mb-2">
+        Target User
+      </label>
+      <Dropdown
+  className="mt-2"
+  id="userId"
+  value={selectedUserId}
+  options={userData?.map(user => ({ label: user?.name, value: user?.userId }))}
+  onChange={(e) => {
+    console.log('Selected user ID:', e.value); // Check the selected value
+    setSelectedUserId(e.value); // Ensure that setSelectedUserId is updating the state correctly
+  }}
+  placeholder="Select a user"
+/>
           </div>
 
           <div className="mt-3">

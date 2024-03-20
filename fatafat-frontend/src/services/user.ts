@@ -46,8 +46,9 @@ export async function adjustPoint(paylaod: AdjustPointFormData) {
 
 
 export async function transferPoint(paylaod: TransferPointFormData) {
-  const { data } = await http().post("/user/transfer-point", paylaod);
   console.log("result data",paylaod);
+
+  const { data } = await http().post("/user/transfer-point", paylaod);
 
   console.log("Transfer point",data);
   return data;

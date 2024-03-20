@@ -10,10 +10,10 @@ export function useTransferPoint() {
       return transferPoint(payload);
     },
     onSuccess: (data) => {
-      navigate("/result", { state: data });
+      navigate("/admin/all-transactions", { state: data });
     },
     onError: (data) => {
-      navigate("/result", { state: data });
+      navigate("/admin/all-transactions", { state: data });
     },
   });
 }

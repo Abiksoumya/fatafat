@@ -13,6 +13,7 @@ import {
 import { useAllUsers } from "../../query/use-all-users";
 import { useEffect, useState } from "react";
 import { decodeToken } from "../../helper/jwt.halper";
+import { useUserDetails } from "../../query/use-user-details";
 
 export type CreateUserInputs = {
   name: string;
@@ -36,10 +37,13 @@ export const CreateUserForm = () => {
   const createUserMutation = useCreateUser();
   const { data: allUsers } = useAllUsers();
 
+  const userData = useUserDetails()
+  console.log("--------{}{}{}{}{}------",userData.data.data.name);
+
   useEffect(() => {
     const tokeData =decodeToken()
     setUserId(tokeData.userId)
-    console.log(tokeData.userId);
+    console.log("--------------",tokeData);
 
   },[])
 
@@ -120,7 +124,7 @@ export const CreateUserForm = () => {
             <InputText
               id="createdBy"
               className="mt-2"
-              value={userId}
+              value={userData.data.data.name}
               {...register("createdBy", { required: false })}
             />
           </div> : null}

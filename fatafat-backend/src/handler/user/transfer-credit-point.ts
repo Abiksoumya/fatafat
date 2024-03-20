@@ -6,7 +6,8 @@ export function transferCreditPointHandler() {
   return async (req: Request, res: Response) => {
     const point = req.body.point;
     const userId = req.body.userId;
-    const stokezId = "st-48855004";
+    const stokezId = req.body.userId;
+    
 
     try {
       const sender = await User.findOneAndUpdate(
