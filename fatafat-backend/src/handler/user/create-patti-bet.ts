@@ -9,7 +9,7 @@ export function createPattiBet() {
     // const patti = req.body.patti;
     // const betPoint = req.body.betPoint;
     // const slot = req.body.slot;
-    const { cardData, timeSlot } = req.body;
+    const { cardData, timeSlot,ticketNo } = req.body;
 
     
 
@@ -40,7 +40,7 @@ export function createPattiBet() {
         try {
           // Create bet
           await PattiBet.create({
-            ticketNo: `TKT-${cuid()}`,
+            ticketNo: ticketNo,
             userId: res.locals.userId,
             patti: patti,
             betPoint: betPoint,

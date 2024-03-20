@@ -11,7 +11,6 @@ export default function BetPointTable() {
   console.log("table",data);
   
 
-console.log("user data ---------- ",userData?.data?.data);
 
  
 
@@ -42,7 +41,7 @@ console.log("user data ---------- ",userData?.data?.data);
           </th>
           <td className="px-6 p-4">
                   {/* Find the corresponding user data by userId */}
-                  {userData.data.data.find((user: any) => user._id === item?.user)?.name || "Unknown"}
+                  {userData?.data?.data?.find((user: any) => user._id === item?.user)?.name || "Unknown"}
                 </td>
           <td className="px-6 p-4">{item?.totalBetPoint}</td>
           <td className="px-6 p-4">
@@ -53,7 +52,7 @@ console.log("user data ---------- ",userData?.data?.data);
           </td>
           <td className="px-6 p-4">
                   {/* Find the corresponding user data by userId */}
-                  {userData.data.data.find((user: any) => user._id === item?.user)?.ntp.toFixed(1) || "Unknown"}
+                  {userData?.data?.data?.find((user: any) => user._id === item?.user)?.ntp.toFixed(1) || "Unknown"}
                 </td>
         </tr>
         ))
