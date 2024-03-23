@@ -3,6 +3,7 @@ import {User} from "../../model/user.modelr"; // Assuming UserModel is your Mong
 import PattiBet from "../../model/pattibet.model"; // Assuming PattiBetModel is your Mongoose model
 import Transaction from "../../model/transaction.model"; // Assuming TransactionModel is your Mongoose model
 import cuid from "cuid";
+import ReportHistory from "../../model/report.model";
 
 export function createPattiBet() {
   return async (req: Request, res: Response) => {
@@ -10,6 +11,8 @@ export function createPattiBet() {
     // const betPoint = req.body.betPoint;
     // const slot = req.body.slot;
     const { cardData, timeSlot,ticketNo } = req.body;
+
+    console.log("req uest data", req.body)
 
     
 
@@ -34,8 +37,21 @@ export function createPattiBet() {
         if (!stokez) {
           throw new Error("Stokez user not found");
         }
-  
-        
+
+        const report = await ReportHistory.find({user:res.locals.id});
+
+        // console.log("Report History", report);
+        let dbTime :any = null
+        let time :any = null
+        if(report.length > 0){
+          report.forEach(item => {
+            dbTime = item.timestamp.toISOString().split('T')[0];
+           const times =  new Date();
+           time = times.toISOString().split('T')[0];
+         
+         });
+        }
+        console.log("Report History",dbTime,time)
 
         try {
           // Create bet
@@ -55,24 +71,27 @@ export function createPattiBet() {
             { userId: res.locals.userId },
             {
               $inc: {
-                ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
+                ntp: - betPoint * (user.margin ?? 0) * 0.01,
                 balance: -betPoint,
               },
             },
             { new: true }
           );
-  
+            console.log("user final ntp",userUpdate)
           // Credit commission to stokez
           const stokezUpdate = await User.findOneAndUpdate(
             { userId: user.createdBy },
             {
               $inc: {
-                balance: betPoint * (stokez.margin ?? 0) * 0.01,
-                ntp: betPoint * (stokez.margin ?? 0) * 0.01,
+                balance: -betPoint,
+                ntp:- betPoint * (stokez.margin ?? 0) * 0.01,
               },
             },
             { new: true }
           );
+
+          console.log("user final ntp",stokezUpdate)
+
   
           // Add transaction details
           await Transaction.create([
@@ -91,6 +110,29 @@ export function createPattiBet() {
               type: "credit",
             },
           ]);
+
+          if(dbTime == null && time == null){
+            console.log("working if block")
+            await ReportHistory.create({
+              userId: res.locals.userId,
+              userName:user.name,
+              user:res.locals.id,
+              winPoint:0
+            });
+            
+          } else {
+            console.log("working else block",user.ntp,user.margin)
+            await ReportHistory.findOneAndUpdate(
+              {user: res.locals.id },
+              {
+                $set: {
+                  ntp: user.ntp,
+                  patti:patti,
+                  betPoint: betPoint,
+                },
+              },
+            )
+          }
   
           // Commit transaction
          

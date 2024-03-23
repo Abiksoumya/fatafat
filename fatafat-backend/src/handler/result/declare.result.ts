@@ -4,6 +4,7 @@ import PattiBet from "../../model/pattibet.model"; // Assuming PattiBetModel is 
 import Transaction from "../../model/transaction.model"; // Assuming TransactionModel is your Mongoose model
 import cuid from "cuid";
 import Result from "../../model/result.model";
+import ReportHistory from "../../model/report.model";
 
 export function declareResult() {
   return async (req: Request, res: Response) => {
@@ -14,6 +15,15 @@ export function declareResult() {
     console.log(winSinglePatti,winThreePatti)
 
     const totalPoint = winSinglePatti ? winSinglePatti : 0 * 9 + winThreePatti ? winThreePatti : 0 * 100
+
+
+    const getCurrentDate = (): string => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, '0');
+      const day = today.getDate().toString().padStart(2, '0');
+      return  `${year}-${month}-${day}`;
+    };
 
     // console.log(totalPoint)
 
@@ -85,8 +95,8 @@ export function declareResult() {
           { userId: res.locals.userId },
           {
             $inc: {
-              ntp: totalPoint - totalPoint * (user.margin ?? 0) * 0.01,
-              balance: -totalPoint,
+              ntp: - totalPoint * (user.margin ?? 0) * 0.01,
+              balance: totalPoint,
             },
           },
           { new: true }
@@ -121,6 +131,21 @@ export function declareResult() {
             type: "credit",
           },
         ]);
+
+       const report = await ReportHistory.findOneAndUpdate(
+          {date: getCurrentDate() },
+          {
+            $set: {
+              ntp: user.ntp,
+             
+            },
+            $inc: {
+              winPoint: totalPoint,
+             
+            },
+          },
+        )
+        console.log("report",report)
 
         // Commit transaction
         await session.commitTransaction();

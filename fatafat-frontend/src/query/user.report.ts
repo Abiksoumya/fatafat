@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
-import { getAllUsersReport } from "../services/user";
+import { getReport } from "../services/user";
 
 export function useAllUsersReport() {
   return useQuery({
-    queryKey: ["all-users-report"],
+    queryKey: ["all-report"],
     queryFn: () => {
-      return getAllUsersReport();
+      return getReport();
     },
   });
 }

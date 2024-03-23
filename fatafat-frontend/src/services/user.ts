@@ -61,7 +61,7 @@ export async function declareResult(paylaod: ResultFormData) {
   return data;
 }
 
-export async function getAllUsersReport() {
-  const { data } = await http().get("/user/getPointByUser");
+export async function getReport() {
+  const { data } = await http().get("/user/reports");
   return data;
 }

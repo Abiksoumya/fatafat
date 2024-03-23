@@ -17,6 +17,7 @@ import { declareResult } from "../handler/result/declare.result";
 import { getResultsHandler } from "../handler/transaction/get-result-handler";
 import { getBetPattiByUser } from "../handler/user/get.patti.user";
 import { getPointByUser } from "../handler/user/get.point.report";
+import { getAllReport, getReport } from "../handler/user/get.all.report";
 
 const userRouter = express.Router();
 
@@ -25,6 +26,8 @@ const userRouter = express.Router();
 userRouter.post("/create-super-admin", createSuperAdmin());
 userRouter.post("/login", loginUserHandler());
 userRouter.get("/allResult", getResultsHandler());
+userRouter.get("/reports", getAllReport());
+
 
 
 
@@ -48,6 +51,8 @@ userRouter.post("/patti-bet", createPattiBet());
 userRouter.post("/declare", declareResult());
 userRouter.get("/getPattiByUser", getBetPattiByUser());
 userRouter.get("/getPointByUser",getPointByUser());
+userRouter.get("/getReport",getReport());
+
 
 
 export default userRouter;
