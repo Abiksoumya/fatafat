@@ -111,13 +111,15 @@ export function createPattiBet() {
             },
           ]);
 
-          if(dbTime == null && time == null){
+          if(dbTime != time){
             console.log("working if block")
             await ReportHistory.create({
               userId: res.locals.userId,
               userName:user.name,
               user:res.locals.id,
-              winPoint:0
+              winPoint:0,
+              ntp: user.ntp,
+
             });
             
           } else {
