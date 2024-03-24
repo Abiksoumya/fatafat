@@ -2,7 +2,7 @@ import axios from "axios";
 
 export function http() {
   const http = axios.create({
-    baseURL: "https://77.37.54.2:5000",
+    baseURL: "https://www.bengaleff.com:5000",
   });
 
   const token = localStorage.getItem("token");
