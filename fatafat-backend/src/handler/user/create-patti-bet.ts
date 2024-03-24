@@ -40,7 +40,7 @@ export function createPattiBet() {
 
         const report = await ReportHistory.find({user:res.locals.id});
 
-        // console.log("Report History", report);
+        console.log("Report History", report);
         let dbTime :any = null
         let time :any = null
         if(report.length > 0){
@@ -51,7 +51,7 @@ export function createPattiBet() {
          
          });
         }
-        console.log("Report History",dbTime,time)
+        console.log("Report History111111111111",dbTime,time)
 
         try {
           // Create bet
@@ -111,7 +111,7 @@ export function createPattiBet() {
             },
           ]);
 
-          if(dbTime != time){
+          if(report === null || dbTime === null || dbTime !== time){
             console.log("working if block")
             await ReportHistory.create({
               userId: res.locals.userId,

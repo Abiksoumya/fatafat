@@ -6,9 +6,11 @@ export async function getPattiWisePointValue(req: Request, res: Response) {
     const data = await PattiBet.aggregate([
       {
         $group: {
-          _id: "$patti",
+          _id: { patti: "$patti", slot: "$slot" },
           total: { $sum: "$betPoint" }
-        }
+          
+        },
+        
       }
     ]);
 

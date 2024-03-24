@@ -6,7 +6,7 @@ export default function PattiBetsTable() {
   const { data, isFetched } = useAllPattiBets();
 
   let pattiMap = new Map<String, string>();
-  console.log("jjjjjjjjjjjjjjjjjjjj",pattiMap);
+  console.log("jjjjjjjjjjjjjjjjjjjj",data);
 
 
   if (isFetched) {
@@ -30,7 +30,7 @@ export default function PattiBetsTable() {
   //     </div>
   //   );
   function PattiCell({ patti, total }: { patti: string; total: string }) {
-    console.log('patti: ', patti, total);
+    // console.log('patti: ', patti, total);
     return (
       <div className="patti-cell">
         <h4 className="bg-primary">{patti}</h4>

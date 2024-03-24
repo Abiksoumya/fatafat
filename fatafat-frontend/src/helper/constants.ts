@@ -13,6 +13,7 @@ export const slots = [
 
 
 export const PATTIS = [
+  "0",
   "1",
   "2",
   "3",
