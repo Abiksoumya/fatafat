@@ -1,57 +1,53 @@
-import "./patti-table.css";
 import { useAllPattiBets } from "../../query/use-all-patti-bets";
 import { PATTIS } from "../../helper/constants";
 
 export default function PattiBetsTable() {
   const { data, isFetched } = useAllPattiBets();
+  const slots = ["9.3", "11", "12.3", "2", "3.30", "5", "6.30", "8", "9.3"];
 
-  let pattiMap = new Map<String, string>();
-  console.log("jjjjjjjjjjjjjjjjjjjj",data);
-
+  let pattiData = {};
 
   if (isFetched) {
-    data.data.map(({ _id, total }: { _id: string; total: string }) =>
-      pattiMap.set(_id, total)
-    );
+    data.data.forEach(({ _id, total }) => {
+      const patti = _id.patti;
+      const slot = _id.slot;
+      
+      pattiData[patti] = pattiData[patti] || {};
+      pattiData[patti][slot] = total;
+    });
   }
 
-  //   const header = (
-  //     <div className="flex align-items-center justify-content-end gap-2">
-  //       <Button
-  //         type="button"
-  //         label="Export Excel"
-  //         onClick={() =>
-  //           downloadCSV(
-  //             data?.data,
-  //             `all-point-bets${new Date().toLocaleDateString()}`
-  //           )
-  //         }
-  //       />
-  //     </div>
-  //   );
-  function PattiCell({ patti, total }: { patti: string; total: string }) {
-    // console.log('patti: ', patti, total);
-    return (
-      <div className="patti-cell">
-        <h4 className="bg-primary">{patti}</h4>
-        <h5>Total Bet = {total}</h5>
-      </div>
-    );
-  }
-
-  function PattiHeading({ point }: { point: number }) {
-    return <h3 className="bg-secondary">{point}</h3>;
-  }
+  const formatSlot = (slot) => {
+    if (slot.includes(".")) {
+      const [hour, minute] = slot.split(".");
+      return `${hour.padStart(2, "0")}:${minute.padEnd(2, "0")}`;
+    } else {
+      return `${slot}.00`;
+    }
+  };
 
   return (
-    <div className="card patti-table">
-      {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((item) => (
-        <PattiHeading point={item} />
-      ))}
-      {isFetched &&
-        PATTIS.map((item) => (
-          <PattiCell patti={item} total={pattiMap.get(item) ?? "0"} />
-        ))}
+    <div className="overflow-x-auto p-10">
+      <table className="min-w-full  p-10 divide-gray-200 shadow overflow-hidden sm:rounded-lg">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium bg-orange-400 text-gray-50 uppercase tracking-wider">Patti</th>
+            {slots.map((slot, index) => (
+              <th key={index} className="px-6 py-3 text-left text-xs bg-orange-400 font-medium text-gray-50 uppercase tracking-wider">{formatSlot(slot)}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {PATTIS.map((patti, pattiIndex) => (
+            <tr key={pattiIndex} className="hover:bg-gray-100">
+              <td className="px-6 py-4 whitespace-nowrap font-bold text-gray-900">{patti}</td>
+              {slots.map((slot, slotIndex) => (
+                <td key={slotIndex} className="px-6 py-4 whitespace-nowrap text-gray-500">{pattiData[patti]?.[slot] || "0"}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
