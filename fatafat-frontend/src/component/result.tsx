@@ -2,7 +2,7 @@ import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { PATTIS, SINGLE_PATTIS } from "../helper/constants";
+import { PATTIS, SINGLE_PATTIS, THREEPATTIS } from "../helper/constants";
 import { slots } from "../helper/constants";
 
 import { useDeclareResult } from "../mutation/result.mutation";
@@ -20,7 +20,7 @@ export const Result = () => {
   const resultMutation = useDeclareResult();
 
   const submitForm: SubmitHandler<ResultFormData> = (data) => {
-    // console.log("result form data: ", typeof(data.winNumber))
+    console.log("result form data: ",(data))
     resultMutation.mutate(data);
   };
 
@@ -63,7 +63,7 @@ export const Result = () => {
         value={field.value}
         optionLabel="winThreePatti"
         placeholder="Select Three Patti"
-        options={PATTIS.map(winThreePatti => ({ winThreePatti: winThreePatti, value: winThreePatti }))}
+        options={THREEPATTIS.map(winThreePatti => ({ winThreePatti: winThreePatti, value: winThreePatti }))}
         focusInputRef={field.ref}
         onChange={(e) => field.onChange(e.value)}
         className="w-full mt-2"
@@ -82,14 +82,17 @@ export const Result = () => {
   render={({ field }) => (
     <Dropdown
     id="slot"
-      value={field.value}
-      optionLabel="slot" // Adjust this according to the property name used in the options array
-      placeholder="Select Slot"
-      options={slots.map(slot => ({ slot: slot, value: slot }))}
-      focusInputRef={field.ref}
-      onChange={(e) => field.onChange(e.value)}
-      className="w-full mt-2"
-    />
+    value={field.value}
+    optionLabel="slot"
+    placeholder="Select Slot"
+    options={slots.map(slot => ({
+      slot: slot, // Parse slot as a float
+      value: parseFloat(slot), // Parse slot as a float
+    }))}
+    focusInputRef={field.ref}
+    onChange={(e) => field.onChange(parseFloat(e.value))}
+    className="w-full mt-2"
+  />
   )}
 />
           </div>
