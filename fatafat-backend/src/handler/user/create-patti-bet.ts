@@ -40,7 +40,6 @@ export function createPattiBet() {
 
         const report = await ReportHistory.find({user:res.locals.id});
 
-        console.log("Report History", report);
         let dbTime :any = null
         let time :any = null
         if(report.length > 0){
@@ -119,22 +118,28 @@ export function createPattiBet() {
               user:res.locals.id,
               winPoint:0,
               ntp: user.ntp,
+              betPoint: betPoint,
 
             });
             
           } else {
-            console.log("working else block",user.ntp,user.margin)
-            await ReportHistory.findOneAndUpdate(
+            console.log("working else block",betPoint)
+            const updateReport = ReportHistory.findOneAndUpdate(
               {user: res.locals.id },
               {
-                $set: {
+                $inc: {
                   ntp: user.ntp,
                   patti:patti,
-                  betPoint: betPoint,
+                  betPoint:betPoint,
                 },
               },
+              { new: true } // Return the updated document
+
             )
+            console.log("Report update History", updateReport);
+
           }
+
   
           // Commit transaction
          

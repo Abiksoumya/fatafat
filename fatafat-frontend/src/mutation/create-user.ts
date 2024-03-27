@@ -10,7 +10,7 @@ export function useCreateUser() {
       return createNewUser(payload);
     },
     onSuccess: (data) => {
-      navigate("/result", { state: data });
+      navigate("/admin/", { state: data });
       console.log(data);
     },
     onError(error) {
