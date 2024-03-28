@@ -40,10 +40,10 @@ export default function Dashboard() {
           label: "All Patti Bets",
           command: () => navigate("/admin/all-patti-bets"),
         },
-        {
-          label: "Adjust Point",
-          command: () => navigate("/admin/adjust-point"),
-        },
+        // {
+        //   label: "Adjust Point",
+        //   command: () => navigate("/admin/adjust-point"),
+        // },
         {
           label: "Transfer Point",
           command: () => navigate("/admin/transfer-point"),
@@ -72,13 +72,13 @@ export default function Dashboard() {
       {isFetched && !isError && (
         <UserDetails
           user={{
-            name: data.data?.name,
-            balance: data.data?.balance,
-            margin: data.data?.margin,
-            id: data.data?.userId,
-            role: data.data?.role,
-            isActive: data.data?.isActive,
-            ntp: data.data?.ntp,
+            name: data?.data?.name,
+            balance: data?.data?.balance,
+            margin: data?.data?.margin,
+            id: data?.data?.userId,
+            role: data?.data?.role,
+            isActive: data?.data?.isActive,
+            ntp: data?.data?.ntp,
           }}
         />
       )}
