@@ -1,7 +1,7 @@
 import express from "express";
 import userRouter from "./routes/user-router";
 import bodyParser from "body-parser";
-import { schedule } from "./job/publish-result";
+import { schedule ,schedule9_45,schedule11,schedule12_30,schedule2,schedule3_30,schedule5,schedule6_30,schedule8,schedule9_30} from "./job/publish-result";
 import cors from "cors";
 import transRouter from "./routes/transaction-router";
 import { resetAndBackupNTP } from "./job/backup-and-reset-ntp";
@@ -42,6 +42,15 @@ connect(DB as string)
     // handlerUserCreateEvent();
     secureServer.listen(PORT, () => {
       schedule().start();
+      schedule9_45().start();
+      schedule11().start();
+      schedule12_30().start();
+      schedule2().start();
+      schedule3_30().start();
+      schedule5().start();
+      schedule6_30().start();
+      schedule8().start();
+      schedule9_30().start();
 
       console.log(`🔑 Server is running on port ${PORT}`);
     });
