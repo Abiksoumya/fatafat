@@ -12,7 +12,7 @@ export function createPattiBet() {
     // const slot = req.body.slot;
     const { cardData, timeSlot,ticketNo } = req.body;
 
-    console.log("req uest data", req.body)
+    // console.log("req uest data", req.body)
 
     
 
@@ -24,7 +24,7 @@ export function createPattiBet() {
         for (const pattiIndex in cardData) {
           const patti = parseInt(pattiIndex);
           const betPoint = cardData[pattiIndex];
-          console.log("patti point: " + patti, betPoint)
+          // console.log("patti point: " + patti, betPoint)
 
         const user = await User.findOne({ userId: res.locals.userId });
   
@@ -46,11 +46,15 @@ export function createPattiBet() {
           report.forEach(item => {
             dbTime = item.timestamp.toISOString().split('T')[0];
            const times =  new Date();
+           const formattedTime = times.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+
+           console.log("Report History111111111111",res.locals.id,formattedTime)
+
            time = times.toISOString().split('T')[0];
          
          });
         }
-        console.log("Report History111111111111",dbTime,time)
+        // console.log("Report History111111111111",res.locals.id,times)
 
         try {
           // Create bet
@@ -76,7 +80,7 @@ export function createPattiBet() {
             },
             { new: true }
           );
-            console.log("user final ntp",userUpdate)
+            // console.log("user final ntp",userUpdate)
           // Credit commission to stokez
           const stokezUpdate = await User.findOneAndUpdate(
             { userId: user.createdBy },
@@ -89,7 +93,7 @@ export function createPattiBet() {
             { new: true }
           );
 
-          console.log("user final ntp",stokezUpdate)
+          // console.log("user final ntp",stokezUpdate)
 
   
           // Add transaction details
@@ -110,7 +114,7 @@ export function createPattiBet() {
             },
           ]);
 
-          if(report === null || dbTime === null || dbTime !== time){
+          if(report === null || dbTime === null || dbTime != time){
             console.log("working if block")
             await ReportHistory.create({
               userId: res.locals.userId,
@@ -123,20 +127,21 @@ export function createPattiBet() {
             });
             
           } else {
-            console.log("working else block",betPoint)
-            const updateReport = ReportHistory.findOneAndUpdate(
-              {user: res.locals.id },
+            console.log("working else block")
+            await ReportHistory.findOneAndUpdate(
+              {user: res.locals.id,date: time },
               {
                 $inc: {
-                  ntp: user.ntp,
+                  ntp: - betPoint * (stokez.margin ?? 0) * 0.01,
                   patti:patti,
-                  betPoint:betPoint,
+                  betPoint: +betPoint,
                 },
               },
               { new: true } // Return the updated document
 
+
             )
-            console.log("Report update History", updateReport);
+            // console.log("Report update History", updateReport);
 
           }
 
