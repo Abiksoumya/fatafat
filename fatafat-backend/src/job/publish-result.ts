@@ -37,7 +37,7 @@ async function declareResult() {
 }
 
 export function schedule() {
-  return cron.schedule("59 23 * * *", () => {
+  return cron.schedule("26 08 * * *", () => {
     declareResult();
     console.log("Cron running");
   });
