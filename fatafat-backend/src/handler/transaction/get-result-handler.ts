@@ -19,7 +19,7 @@ import Result from "../../model/result.model";
 export function getResultsHandler() {
   return async (req: Request, res: Response) => {
     try {
-      const data = await Result.find({ isPublished: true }).sort({ createdAt: -1 }); // Filter by isPublished: true and sort by createdAt field in descending order
+      const data = await Result.find().sort({ createdAt: -1 }); // Filter by isPublished: true and sort by createdAt field in descending order
       res.status(200).json({
         message: "Result Fetched Successfully",
         data: data,
