@@ -37,13 +37,16 @@ export const CreateUserForm = () => {
   const createUserMutation = useCreateUser();
   const { data: allUsers } = useAllUsers();
 
+  const stokezData = allUsers?.data.filter(entry => entry.role === "stokez");
+
+
+  console.log("all user data", stokezData);
+
   const userData = useUserDetails()
-  console.log("--------{}{}{}{}{}------",userData.data.data.name);
 
   useEffect(() => {
     const tokeData =decodeToken()
     setUserId(tokeData.userId)
-    console.log("--------------",tokeData);
 
   },[])
 
@@ -119,15 +122,24 @@ export const CreateUserForm = () => {
               )}
             />
           </div>
-          {value == 'agent' ?  <div className="mt-3">
-            <label htmlFor="createdBy">Assign Stokez Id</label>
-            <InputText
-              id="createdBy"
-              className="mt-2"
-              value={userData.data.data.name}
-              {...register("createdBy", { required: false })}
-            />
-          </div> : null}
+          {value === 'agent' ?  
+  <div className="mt-3">
+    <label htmlFor="createdBy">Assign Stokez Id</label>
+    <select
+  id="createdBy"
+  className="mt-2 w-full p-3 border-1 rounded-lg"
+  {...register("createdBy", { required: false })}
+>
+  {stokezData?.map((stokez:any, index:any) => (
+    <option  key={index} value={stokez.userId}>
+      {stokez.name}
+    </option>
+  ))}
+</select>
+  </div> 
+  : 
+  null
+}
           
 
           <div className="mt-3">
