@@ -7,6 +7,7 @@ import { slots } from "../helper/constants";
 
 import { useDeclareResult } from "../mutation/result.mutation";
 import { InputNumber } from "primereact/inputnumber";
+import Success from "./ui/success";
 export type ResultFormData = {
   winSinglePatti: number;
   winThreePatti: number
@@ -14,18 +15,21 @@ export type ResultFormData = {
 };
 
 export const Result = () => {
-    console.log("[]]]]]]]]]]]]]]]]]]]]",PATTIS);
 
   const { register, handleSubmit, control } = useForm<ResultFormData>();
-  const resultMutation = useDeclareResult();
+  // const resultMutation = useDeclareResult();
+
+  const {mutate, isSuccess} = useDeclareResult();
 
   const submitForm: SubmitHandler<ResultFormData> = (data) => {
     console.log("result form data: ",(data))
-    resultMutation.mutate(data);
+    mutate(data);
   };
 
   return (
-    <div className="login-form mt-4">
+    <>{
+      isSuccess ? <Success data={{ message: "Result Publish" }}/> :
+      <div className="login-form mt-4">
       <form onSubmit={handleSubmit(submitForm)}>
         <div className="p-field">
         <div className="mt-2">
@@ -97,9 +101,13 @@ export const Result = () => {
 />
           </div>
         </div>
-        <Button label="Result" type="submit" />
+        <Button label="Submit" type="submit" />
       </form>
     </div>
+
+    }
+    </>
+   
   );
 };
 

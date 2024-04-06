@@ -8,6 +8,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { useTransferPoint } from "../../mutation/transfer-point";
 import { useEffect, useState } from "react";
 import { useAllUsers } from "../../query/use-all-users";
+import Success from "../ui/success";
 export type TransferPointFormData = {
   type: String;
   userId: string;
@@ -15,12 +16,13 @@ export type TransferPointFormData = {
 };
 
 export const TransferPointForm = () => {
-    console.log("[]]]]]]]]]]]]]]]]]]]]");
 
   const { register, handleSubmit, control } = useForm<TransferPointFormData>();
-  const transferMutation = useTransferPoint();
+  // const transferMutation = useTransferPoint();
   const [userData, setUserData] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState('');
+
+  const {mutate,isSuccess} = useTransferPoint();
 
   console.log("select value",selectedUserId)
 
@@ -33,7 +35,7 @@ export const TransferPointForm = () => {
     // console.log("transferMutation data: " + data.point)
     const formData = { ...data, userId: selectedUserId };
 
-    transferMutation.mutate(formData);
+    mutate(formData);
   };
 
   const allUsers = useAllUsers()
@@ -44,7 +46,11 @@ export const TransferPointForm = () => {
   },[allUsers])
 
   return (
-    <div className="login-form mt-4">
+    <>
+    {
+      isSuccess === true ? <Success data={{ message: "Transfer" }} /> 
+      :
+      <div className="login-form mt-4">
       <form onSubmit={handleSubmit(submitForm)}>
         <div className="p-field">
           <div className="mt-2">
@@ -86,7 +92,7 @@ export const TransferPointForm = () => {
           </div>
 
           <div className="mt-3">
-            <label htmlFor="point">Point</label>
+            <label htmlFor="point">Amount</label>
             <br />
             <Controller
               name="point"
@@ -105,9 +111,12 @@ export const TransferPointForm = () => {
             />
           </div>
         </div>
-        <Button label="Adjust" type="submit" />
+        <Button label="Submit" type="submit" />
       </form>
     </div>
+    }
+    </>
+   
   );
 };
 

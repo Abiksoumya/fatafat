@@ -5,7 +5,6 @@ import "./form.css"; // You can style your form in LoginForm.css
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 
 import { InputNumber } from "primereact/inputnumber";
-import { useCreateUser } from "../../mutation/create-user";
 import {
   AutoComplete,
   AutoCompleteCompleteEvent,
@@ -14,6 +13,8 @@ import { useAllUsers } from "../../query/use-all-users";
 import { useEffect, useState } from "react";
 import { decodeToken } from "../../helper/jwt.halper";
 import { useUserDetails } from "../../query/use-user-details";
+import Success from "../ui/success";
+import { useCreateUser } from "../../mutation/create-user";
 
 export type CreateUserInputs = {
   name: string;
@@ -27,6 +28,8 @@ export type CreateUserInputs = {
 export const CreateUserForm = () => {
   const [suggestions, setSuggestions] = useState<string[]>();
 
+  const message = "Create user";
+
   const [userId,setUserId] = useState<string>();
   const {
     register,
@@ -34,7 +37,9 @@ export const CreateUserForm = () => {
     control,
     formState: { errors },
   } = useForm<CreateUserInputs>();
-  const createUserMutation = useCreateUser();
+  const { mutate, isSuccess } = useCreateUser();
+
+  console.log("success", isSuccess)
   const { data: allUsers } = useAllUsers();
 
   const stokezData = allUsers?.data.filter(entry => entry.role === "stokez");
@@ -69,9 +74,9 @@ export const CreateUserForm = () => {
     // You can call other setter functions or perform other actions here
 };
 
-  const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
-    createUserMutation.mutate(data);
-  };
+const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
+  mutate(data); // Call the mutate function instead of directly calling createUserMutation.mutate
+};
 
   // const search = (e: AutoCompleteCompleteEvent) => {
   //   let suggs;
@@ -90,7 +95,10 @@ export const CreateUserForm = () => {
   // };
 
   return (
-    <div className="login-form mt-4">
+
+    <>
+     {
+      isSuccess === true ? <Success data={{ message: "User Create" }}/> :    <div className="login-form mt-4">
       <form onSubmit={handleSubmit(submitForm)}>
         <div className="p-field">
           <div>
@@ -207,6 +215,12 @@ export const CreateUserForm = () => {
         />
       </form>
     </div>
+      
+      
+    }
+    </>
+   
+    
   );
 };
 

@@ -2,7 +2,9 @@ import { Request, RequestHandler, Response } from "express";
 import { User } from "../../model/user.modelr";
 
 function generateUserId(role: "admin" | "stokez" | "agent") {
-  return `${role.substring(0, 2)}-${Math.floor(Math.random() * 100000000)}`;
+  const prefix = role.substring(0, 2).toUpperCase(); // Convert role prefix to uppercase
+  const randomSuffix = Math.floor(Math.random() * 1000).toString().padStart(3, '0'); // Generate 3-digit random number with leading zeros if needed
+  return `${prefix}${randomSuffix}`;
 }
 
 export const createUser: RequestHandler = async (req: Request, res: Response) => {

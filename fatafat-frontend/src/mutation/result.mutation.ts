@@ -1,19 +1,28 @@
 import { useMutation } from "@tanstack/react-query";
 import { declareResult } from "../services/user";
-import { useNavigate } from "react-router-dom";
 import { ResultFormData } from "../component/result";
+import { useState } from "react";
 
 export function useDeclareResult() {
-  const navigate = useNavigate();
-  return useMutation({
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
+
+  const mutation = useMutation({
     mutationFn: (payload: ResultFormData) => {
       return declareResult(payload);
     },
-    onSuccess: (data) => {
-      navigate("/admin/all-users", { state: data });
+    onSuccess: (data:any) => {
+      setIsSuccess(true);
     },
-    onError: (data) => {
-      navigate("/admin/all-users", { state: data });
+   
+    onError: (error) => {
+      setIsSuccess(false);
     },
-  });
+  })
+
+  const mutate = (data: ResultFormData) =>{
+    setIsSuccess(false);
+    mutation.mutate(data);
+  };
+  return {...mutation,isSuccess, mutate}
+  
 }
