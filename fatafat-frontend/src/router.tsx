@@ -11,6 +11,7 @@ import Result from "./component/result";
 import PointBetsTable from "./component/tables/all-point-bets-table";
 import PattiBetsTable from "./component/tables/all-patti-bets-table";
 import { TransferPointForm } from "./component/forms/transfer-point-form";
+import UpdateUserForm from "./component/forms/update.user.form";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
         element: <PattiBetsTable />,
       },
       { path: "result", element: <Result /> },
+      {
+        path: "user-update/:id",
+        element: <UpdateUserForm />,
+      },
 
     ],
   },

@@ -9,6 +9,7 @@ import { useTransferPoint } from "../../mutation/transfer-point";
 import { useEffect, useState } from "react";
 import { useAllUsers } from "../../query/use-all-users";
 import Success from "../ui/success";
+import { AutoComplete } from "primereact/autocomplete";
 export type TransferPointFormData = {
   type: String;
   userId: string;
@@ -20,11 +21,11 @@ export const TransferPointForm = () => {
   const { register, handleSubmit, control } = useForm<TransferPointFormData>();
   // const transferMutation = useTransferPoint();
   const [userData, setUserData] = useState([]);
-  const [selectedUserId, setSelectedUserId] = useState('');
+  const [selectedUserId, setSelectedUserId] = useState(null||'');
+  console.log("user id ",selectedUserId.userId)
 
   const {mutate,isSuccess} = useTransferPoint();
 
-  console.log("select value",selectedUserId)
 
   const types = [
     { name: "Credit", value: "credit" },
@@ -33,12 +34,27 @@ export const TransferPointForm = () => {
 
   const submitForm: SubmitHandler<TransferPointFormData> = (data) => {
     // console.log("transferMutation data: " + data.point)
-    const formData = { ...data, userId: selectedUserId };
+    const formData = { ...data, userId: selectedUserId.userId };
+
 
     mutate(formData);
   };
 
+
   const allUsers = useAllUsers()
+
+const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
+const [inputValue, setInputValue] = useState<string>('');
+
+// Define a function to filter users based on user input
+const filterUsers = (event: any) => {
+  const query = event.query.toLowerCase();
+  setInputValue(event.query); // Update the input value state
+  const filteredData = userData?.filter((user: any) => {
+    return user.name.toLowerCase().includes(query);
+  });
+  setFilteredUsers(filteredData);
+};
 
 
   useEffect(() => {
@@ -78,17 +94,17 @@ export const TransferPointForm = () => {
           <label htmlFor="userId" className="mb-2">
         Target User
       </label>
-      <Dropdown
-  className="mt-2 w-full"
-  id="userId"
-  value={selectedUserId}
-  options={userData?.map(user => ({ label: user?.name, value: user?.userId }))}
-  onChange={(e) => {
-    console.log('Selected user ID:', e.value); // Check the selected value
-    setSelectedUserId(e.value); // Ensure that setSelectedUserId is updating the state correctly
-  }}
-  placeholder="Select a user"
-/>
+      <AutoComplete
+    value={selectedUserId}
+    suggestions={filteredUsers}
+    completeMethod={filterUsers}
+    field="name"
+    onChange={(e) => {
+      console.log('Selected user ID:', e.value); // Check the selected value
+      setSelectedUserId(e.value); // Ensure that setSelectedUserId is updating the state correctly
+    }}
+    placeholder="Search users"
+  />
           </div>
 
           <div className="mt-3">

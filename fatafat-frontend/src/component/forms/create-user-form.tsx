@@ -27,6 +27,24 @@ export type CreateUserInputs = {
 
 export const CreateUserForm = () => {
   const [suggestions, setSuggestions] = useState<string[]>();
+  const [selectedStokez, setSelectedStokez] = useState<any>(null);
+  const [filteredStokez, setFilteredStokez] = useState<any>(null);
+
+  console.log("selectedStokez",selectedStokez)
+
+
+  const filterStokez = (event: any) => {
+    const query = event.query;
+    const filteredStokez = stokezData?.filter((stokez: any) => {
+      return stokez.name.toLowerCase().includes(query.toLowerCase());
+    });
+    setFilteredStokez(filteredStokez);
+  };
+
+  const handleStokezSelection = (e: any) => {
+    setSelectedStokez(e.value);
+  };
+
 
   const message = "Create user";
 
@@ -133,17 +151,16 @@ const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
           {value === 'agent' ?  
   <div className="mt-3">
     <label htmlFor="createdBy">Assign Stokez Id</label>
-    <select
+    <AutoComplete
   id="createdBy"
-  className="mt-2 w-full p-3 border-1 rounded-lg"
-  {...register("createdBy", { required: false })}
->
-  {stokezData?.map((stokez:any, index:any) => (
-    <option  key={index} value={stokez.userId}>
-      {stokez.name}
-    </option>
-  ))}
-</select>
+  value={selectedStokez}
+  onChange={handleStokezSelection}
+  suggestions={filteredStokez}
+  completeMethod={filterStokez}
+  field="name"
+  dropdown
+  className="mt-2 w-full"
+/>
   </div> 
   : 
   null

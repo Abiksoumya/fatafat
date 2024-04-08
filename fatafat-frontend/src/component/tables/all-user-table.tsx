@@ -8,6 +8,8 @@ import { downloadCSV } from "../../helper/csv-download";
 import { useState } from "react";
 import { http } from "../../helper/http";
 import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+
 
 interface User {
   id: String;
@@ -29,8 +31,13 @@ export default function AllUsersTable() {
   const client = useQueryClient();
   console.log(data);
 
+  const navigate = useNavigate();
+  const handleEdit = (userId:any) => {
+    navigate(`/admin/user-update/${userId}`);
+  };
+
   const header = (
-    <div className="flex align-items-center justify-content-end gap-2">
+    <div className="flex align-items-center justify-content-end gap-1">
       <Button
         type="button"
         label="Export Excel"
@@ -118,6 +125,17 @@ export default function AllUsersTable() {
           header="Creation Date & Time"
           body={dateTimeTemplate}
           headerStyle={{ width: "5rem" }}></Column>
+        <Column
+         header="Action"
+          body={(rowData) => (
+            <Button
+              label="Edit"
+              className="p-button-rounded p-button-success"
+              onClick={() => handleEdit(rowData.userId)}
+            />
+          )}
+          style={{ textAlign: "center", width: "6rem" }}
+        />
       </DataTable>
     </div>
   );

@@ -34,6 +34,12 @@ export async function createNewUser(payload: CreateUserInputs) {
   return data;
 }
 
+export async function updateUser(payload: CreateUserInputs,id:string) {
+  console.log("Update user", JSON.stringify(payload));
+  const { data } = await http().put(`/user/update/${id}`, payload);
+  return data;
+}
+
 export async function getAllUsers() {
   const { data } = await http().get("/user/all");
   return data;
