@@ -95,6 +95,7 @@ const filterUsers = (event: any) => {
         Target User
       </label>
       <AutoComplete
+      style={{width: '100%'}}
     value={selectedUserId}
     suggestions={filteredUsers}
     completeMethod={filterUsers}
@@ -105,6 +106,7 @@ const filterUsers = (event: any) => {
     }}
     placeholder="Search users"
   />
+      
           </div>
 
           <div className="mt-3">
