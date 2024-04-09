@@ -7,7 +7,8 @@ export async function getPattiWisePointValue(req: Request, res: Response) {
       {
         $group: {
           _id: { patti: "$patti", slot: "$slot" },
-          total: { $sum: "$betPoint" }
+          total: { $sum: "$betPoint" },
+          timestamps: { $addToSet: "$timestamp" }
           
         },
         

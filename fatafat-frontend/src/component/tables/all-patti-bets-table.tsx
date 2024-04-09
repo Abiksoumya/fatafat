@@ -3,6 +3,7 @@ import { PATTIS } from "../../helper/constants";
 
 export default function PattiBetsTable() {
   const { data, isFetched } = useAllPattiBets();
+  console.log(data);
   const slots = ["9.45", "11", "12.3", "2", "3.30", "5", "6.30", "8", "9.3"];
 
   let pattiData = {};
