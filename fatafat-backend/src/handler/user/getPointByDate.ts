@@ -14,7 +14,9 @@ interface SlotData {
 export function getPointByDate() {
   return async (req: Request, res: Response) => {
     try {
-      const data = await PattiBet.find();
+      const date = req.params.date;
+      console.log(date);
+      const data = await PattiBet.find({ date });
 
       if (data.length > 0) {
         const slotDataMap = new Map<any, any>(); // Map to store total bet for each slot and numbers bet on

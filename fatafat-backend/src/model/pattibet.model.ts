@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document, Model, Types } from 'mongoose';
+import mongoose, { Schema, Document, Model, Types } from "mongoose";
 
 // Define interface for PattiBet document
 interface IPattiBet extends Document {
@@ -10,10 +10,10 @@ interface IPattiBet extends Document {
   isActive: boolean;
   slot: number;
   reward: number;
+  date: string;
   timestamp: Date;
   status: string;
-  user:Types.ObjectId
-
+  user: Types.ObjectId;
 }
 
 // Define PattiBet schema
@@ -26,9 +26,10 @@ const pattiBetSchema: Schema<IPattiBet> = new Schema({
   isActive: Boolean,
   slot: Number,
   reward: { type: Number, default: 0 },
+  date: String,
   timestamp: { type: Date, default: Date.now },
   status: String,
-  user:{
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,
@@ -36,6 +37,6 @@ const pattiBetSchema: Schema<IPattiBet> = new Schema({
 });
 
 // Define PattiBet model
-const PattiBet: Model<IPattiBet> = mongoose.model('PattiBet', pattiBetSchema);
+const PattiBet: Model<IPattiBet> = mongoose.model("PattiBet", pattiBetSchema);
 
 export default PattiBet;

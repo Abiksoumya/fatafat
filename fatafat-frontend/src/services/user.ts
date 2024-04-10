@@ -9,17 +9,16 @@ export interface LoginPayload {
   password: string;
 }
 export async function loginUser(payload: LoginPayload) {
-  console.log("================================",payload)
+  console.log("================================", payload);
 
   const res = await http().post("/user/login", {
     username: payload.username,
     password: payload.password,
   });
 
-  console.log("================================",res.data)
-  if(res.data) {
+  console.log("================================", res.data);
+  if (res.data) {
     return res.data;
-
   }
 }
 
@@ -34,7 +33,7 @@ export async function createNewUser(payload: CreateUserInputs) {
   return data;
 }
 
-export async function updateUser(payload: CreateUserInputs,id:string) {
+export async function updateUser(payload: CreateUserInputs, id: string) {
   console.log("Update user", JSON.stringify(payload));
   const { data } = await http().put(`/user/update/${id}`, payload);
   return data;
@@ -50,18 +49,17 @@ export async function adjustPoint(paylaod: AdjustPointFormData) {
   return data;
 }
 
-
 export async function transferPoint(paylaod: TransferPointFormData) {
-  console.log("result data",paylaod);
+  console.log("result data", paylaod);
 
   const { data } = await http().post("/user/transfer-point", paylaod);
 
-  console.log("Transfer point",data);
+  console.log("Transfer point", data);
   return data;
 }
 
 export async function declareResult(paylaod: ResultFormData) {
-  console.log("result data",paylaod);
+  console.log("result data", paylaod);
 
   const { data } = await http().post("/user/declare", paylaod);
   return data;
@@ -69,5 +67,10 @@ export async function declareResult(paylaod: ResultFormData) {
 
 export async function getReport() {
   const { data } = await http().get("/user/reports");
+  return data;
+}
+
+export async function getBetDetailsByDate(id: string) {
+  const { data } = await http().get(`/user/getPointByDate/${id}`);
   return data;
 }
