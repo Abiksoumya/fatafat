@@ -19,6 +19,7 @@ import { getBetPattiByUser } from "../handler/user/get.patti.user";
 import { getPointByUser } from "../handler/user/get.point.report";
 import { getAllReport, getReport } from "../handler/user/get.all.report";
 import { updateUser } from "../handler/user/update.user";
+import { getPointByDate } from "../handler/user/getPointByDate";
 
 const userRouter = express.Router();
 
@@ -28,9 +29,6 @@ userRouter.post("/create-super-admin", createSuperAdmin());
 userRouter.post("/login", loginUserHandler());
 userRouter.get("/allResult", getResultsHandler());
 userRouter.get("/reports", getAllReport());
-
-
-
 
 userRouter.use(verifyUser());
 //userRouter.use(verifyStokez());
@@ -51,10 +49,10 @@ userRouter.post("/point-bet", createPointBet());
 userRouter.post("/patti-bet", createPattiBet());
 userRouter.post("/declare", declareResult());
 userRouter.get("/getPattiByUser", getBetPattiByUser());
-userRouter.get("/getPointByUser",getPointByUser());
-userRouter.get("/getReport",getReport());
+userRouter.get("/getPointByUser", getPointByUser());
+userRouter.get("/getPointByDate/:date", getPointByDate());
+
+userRouter.get("/getReport", getReport());
 userRouter.put("/update/:userId", updateUser);
-
-
 
 export default userRouter;
