@@ -3,15 +3,29 @@ import { useUserDetails } from "./query/use-user-details";
 import { useNavigate } from "react-router-dom";
 import UserDetails from "./component/user-details-card";
 import { MenuItem } from "primereact/menuitem";
+import { useEffect, useState } from "react";
+import { decodeToken } from "./helper/jwt.halper";
 export default function Dashboard() {
   const { data, isFetched, isError } = useUserDetails();
   const navigate = useNavigate();
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    const tokeData = decodeToken();
+    console.log("token data", tokeData);
+    setUser(tokeData.role);
+  }, []);
 
   const menuItems: MenuItem[] = [
     {
       label: "Choose Actions",
       items: [
-        
+        {
+          label: "Home",
+          command: () => {
+            navigate("/admin/");
+          },
+        },
+
         {
           label: "Create User",
           command: () => {
@@ -47,13 +61,15 @@ export default function Dashboard() {
         {
           label: "Transfer Point",
           command: () => navigate("/admin/transfer-point"),
-
         },
-        {
-          label: "Result",
-          command: () => navigate("/admin/result"),
-
-        },
+        ...(user.role === "admin"
+          ? [
+              {
+                label: "Result",
+                command: () => navigate("/admin/result"),
+              },
+            ]
+          : []),
         {
           label: "Logout",
           command: () => {

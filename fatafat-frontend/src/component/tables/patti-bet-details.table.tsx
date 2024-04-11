@@ -10,13 +10,13 @@ export default function PattibetDetailsTable() {
 
   const { data, isFetched } = usebetDetailsByDate(userId);
   const filteredData = data?.data?.filter((item) => item.date === date);
-  const totalBetAmount = filteredData.reduce(
+  const totalBetAmount = filteredData?.reduce(
     (total, item) => total + (item.betPoint || 0),
     0
   );
 
   // Calculate total win bet amount
-  const totalWinBetAmount = filteredData.reduce(
+  const totalWinBetAmount = filteredData?.reduce(
     (total, item) => total + (item.winBetPoint || 0),
     0
   );
@@ -48,7 +48,7 @@ export default function PattibetDetailsTable() {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {filteredData.map((item, index) => (
+            {filteredData?.map((item, index) => (
               <tr key={index} className="hover:bg-gray-100">
                 <td className="px-6 py-4 whitespace-nowrap">{item.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap">{item.slot}</td>

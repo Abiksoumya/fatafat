@@ -3,6 +3,7 @@ import { CreateUserInputs } from "../component/forms/create-user-form";
 import { TransferPointFormData } from "../component/forms/transfer-point-form";
 import { ResultFormData } from "../component/result";
 import { http } from "../helper/http";
+import { decodeToken } from "../helper/jwt.halper";
 
 export interface LoginPayload {
   username: string;
@@ -40,7 +41,17 @@ export async function updateUser(payload: CreateUserInputs, id: string) {
 }
 
 export async function getAllUsers() {
+  const tokeData = decodeToken();
   const { data } = await http().get("/user/all");
+
+  if (tokeData.role === "stokez") {
+    const filteredData = data?.data.filter((item: any) => {
+      // Check if the role is "stokez" and userId matches
+      return item.role === "agent" && item.createdBy === tokeData?.userId;
+    });
+    return filteredData;
+  }
+
   return data;
 }
 

@@ -5,11 +5,11 @@ import { Tag } from "primereact/tag";
 import moment from "moment";
 import { Button } from "primereact/button";
 import { downloadCSV } from "../../helper/csv-download";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { http } from "../../helper/http";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-
+import { decodeToken } from "../../helper/jwt.halper";
 
 interface User {
   id: String;
@@ -32,9 +32,11 @@ export default function AllUsersTable() {
   console.log(data);
 
   const navigate = useNavigate();
-  const handleEdit = (userId:any) => {
+  const handleEdit = (userId: any) => {
     navigate(`/admin/user-update/${userId}`);
   };
+
+  // console.log("filter data", filteredData);
 
   const header = (
     <div className="flex align-items-center justify-content-end gap-1">
@@ -42,10 +44,7 @@ export default function AllUsersTable() {
         type="button"
         label="Export Excel"
         onClick={() =>
-          downloadCSV(
-            data?.data,
-            `user-lists${new Date().toLocaleDateString()}`
-          )
+          downloadCSV(data, `user-lists${new Date().toLocaleDateString()}`)
         }
       />
     </div>
@@ -94,7 +93,7 @@ export default function AllUsersTable() {
       <DataTable
         header={header}
         virtualScrollerOptions={{ lazy: true }}
-        value={data?.data}
+        value={data}
         paginator
         rows={50}
         rowsPerPageOptions={[50, 100, 200, 500]}
@@ -105,7 +104,8 @@ export default function AllUsersTable() {
         }}
         onRowUnselect={(e) => {
           setShow(false);
-        }}>
+        }}
+      >
         <Column selectionMode="single" headerStyle={{ width: "3rem" }}></Column>
         <Column field="userId" header="User Id" filter></Column>
         <Column field="name" header="Name" filter></Column>
@@ -114,7 +114,8 @@ export default function AllUsersTable() {
           field="isActive"
           header="Account Status"
           filter
-          body={activeTemplate}></Column>
+          body={activeTemplate}
+        ></Column>
         <Column field="role" header="Type Of User" filter></Column>
         <Column field="balance" header="Balance"></Column>
         <Column field="margin" header="Margin %"></Column>
@@ -124,9 +125,10 @@ export default function AllUsersTable() {
           field="createdAt"
           header="Creation Date & Time"
           body={dateTimeTemplate}
-          headerStyle={{ width: "5rem" }}></Column>
+          headerStyle={{ width: "5rem" }}
+        ></Column>
         <Column
-         header="Action"
+          header="Action"
           body={(rowData) => (
             <Button
               label="Edit"
