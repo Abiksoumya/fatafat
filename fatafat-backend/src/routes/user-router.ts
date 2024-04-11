@@ -50,7 +50,7 @@ userRouter.post("/patti-bet", createPattiBet());
 userRouter.post("/declare", declareResult());
 userRouter.get("/getPattiByUser", getBetPattiByUser());
 userRouter.get("/getPointByUser", getPointByUser());
-userRouter.get("/getPointByDate/:date", getPointByDate());
+userRouter.get("/getPointByDate/:id", getPointByDate());
 
 userRouter.get("/getReport", getReport());
 userRouter.put("/update/:userId", updateUser);

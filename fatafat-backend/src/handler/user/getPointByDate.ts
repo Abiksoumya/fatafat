@@ -13,53 +13,17 @@ interface SlotData {
 
 export function getPointByDate() {
   return async (req: Request, res: Response) => {
+    console.log(req.params);
     try {
-      const date = req.params.date;
-      console.log(date);
-      const data = await PattiBet.find({ date });
+      const id = req.params.id;
+      console.log(id);
+      const data = await PattiBet.find({ userId: id });
+      console.log("all bet data", data);
 
       if (data.length > 0) {
-        const slotDataMap = new Map<any, any>(); // Map to store total bet for each slot and numbers bet on
-
-        data.forEach((bet) => {
-          const { userId, slot, betPoint, winBetPoint, status } = bet;
-          if (status === "pending") {
-            // considering only pending bets
-            const slotData = slotDataMap.get(slot) || {
-              userId: userId,
-              slot: slot,
-              totalBet: 0,
-              numbers: [],
-            };
-
-            // Increase total bet for the slot
-            slotData.totalBet += betPoint;
-
-            // Check if number is already present in the numbers array
-            const numberIndex = slotData.numbers.findIndex(
-              (numData) => numData.number === bet.patti
-            );
-            if (numberIndex !== -1) {
-              // Increase the total bet amount for the number
-              slotData.numbers[numberIndex].totalBetAmount += betPoint;
-            } else {
-              // Add the number to the numbers array with its bet amount
-              slotData.numbers.push({
-                number: bet.patti,
-                totalBetAmount: betPoint,
-              });
-            }
-
-            slotDataMap.set(slot, slotData);
-          }
-        });
-
-        // Convert the map to an array
-        const slotDataArray: SlotData[] = Array.from(slotDataMap.values());
-
         res.status(200).json({
           message: "Data Fetched Successfully",
-          data: slotDataArray,
+          data: data,
         });
       } else {
         res.status(404).json({

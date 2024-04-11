@@ -9,46 +9,66 @@ export default function PattibetDetailsTable() {
   console.log(date, userId);
 
   const { data, isFetched } = usebetDetailsByDate(date);
-  console.log("bet data by date", data, isFetched);
+
+  function filterDataByUserId(data: any, userId: any) {
+    // Filter the data based on the provided userId
+    return data?.data.filter((item) => item.userId === userId);
+  }
+
+  const filteredData = filterDataByUserId(data, userId);
+
+  const uniqueSlots = [...new Set(filteredData?.map((item) => item.slot))];
+  const slotToTotalBetMap = new Map();
+  filteredData?.forEach((item) => {
+    item.numbers.forEach((number) => {
+      slotToTotalBetMap.set(
+        number.slot,
+        (slotToTotalBetMap.get(number.slot) || 0) + number.totalBetAmount
+      );
+    });
+  });
+  console.log(filteredData);
 
   return (
     <>
-      <div className="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
-        <table className="w-full border-collapse bg-white text-left text-sm text-gray-500">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="text-center p-2 font-medium text-gray-900">ID</th>
-              <th className="text-center p-2 font-medium text-gray-900">
-                Username
+      <table className="table-auto w-full">
+        <thead>
+          <tr>
+            <th className="px-6 py-3 border border-gray-200 text-left">
+              UserId
+            </th>
+            {/* Dynamically generate table headers for each unique slot */}
+            {uniqueSlots?.map((slot) => (
+              <th
+                key={slot}
+                className="px-6 py-3 border border-gray-200 text-left"
+              >
+                Slot {slot}
               </th>
-              <th className="text-center p-2 font-medium text-gray-900">
-                Play Point
-              </th>
-              <th className="text-center p-2 font-medium text-gray-900">
-                Win Point
-              </th>
-              <th className="text-center p-2 font-medium text-gray-900">
-                Agent Commission
-              </th>
-              <th className="text-center p-2 font-medium text-gray-900">NTP</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {/* Map through data and display user information */}
+          {filteredData?.map((item) => (
+            <tr key={item.userId} className="border border-gray-200">
+              <td className="px-6 py-4 border border-gray-200">
+                {item.userId}
+              </td>
+              {/* Map through unique slots again to display corresponding totalBetAmount */}
+              {uniqueSlots.map((slot) => (
+                <td
+                  key={`${item.userId}-${slot}`}
+                  className="px-6 py-4 border border-gray-200"
+                >
+                  {/* Retrieve totalBetAmount from lookup object or display 0 */}
+                  {slotToTotalBetMap.get(slot) || 0}
+                </td>
+              ))}
             </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-100 border border-gray-100">
-            <tr className="hover:bg-gray-50">
-              <th className="flex gap-3 px-6 p-4 font-normal text-gray-900">
-                <div className="text-sm">
-                  <div className="text-gray-400">id</div>
-                </div>
-              </th>
-              <td className="px-6 p-4">name</td>
-              <td className="px-6 p-4">betPoint</td>
-              <td className="px-6 p-4">winPoint</td>
-              <td className="px-6 p-4">3</td>
-              <td className="px-6 p-4">npn</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </>
   );
 }
