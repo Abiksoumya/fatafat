@@ -28,26 +28,26 @@ export default function PattibetDetailsTable() {
       <div className="overflow-x-auto p-10">
         <h2 className="text-2xl ml-1 mb-4">Transaction Data</h2>
         <table className="min-w-full p-10 divide-gray-200 shadow overflow-hidden sm:rounded-lg">
-          <thead className="bg-gray-50">
+          <thead className="bg-orange-500">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className=" py-2 text-center text-xs font-medium text-gray-50 uppercase tracking-wider">
                 Date
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className=" py-2 text-center text-xs font-medium text-gray-50 uppercase tracking-wider">
                 Slot
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className=" py-2 text-center text-xs font-medium text-gray-50 uppercase tracking-wider">
                 Patti
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className=" py-2 text-center text-xs font-medium text-gray-50 uppercase tracking-wider">
                 Bet Amount
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className=" py-2 text-center text-xs font-medium text-gray-50 uppercase tracking-wider">
                 Win Bet Amount
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white divide-y divide-gray-200 text-center">
             {filteredData?.map((item, index) => (
               <tr key={index} className="hover:bg-gray-100">
                 <td className="px-6 py-4 whitespace-nowrap">{item.date}</td>
@@ -63,15 +63,17 @@ export default function PattibetDetailsTable() {
             ))}
           </tbody>
           <tfoot>
-            <tr className="bg-gray-50">
+            <tr className="bg-green-100">
               <td
                 colSpan="3"
-                className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-8 py-4 text-right text-xs font-bold text-gray-500 uppercase tracking-wider"
               >
                 Total
               </td>
-              <td className="px-6 py-4 whitespace-nowrap">{totalBetAmount}</td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              <td className="px-6 py-4 whitespace-nowrap text-center font-bold">
+                {totalBetAmount}
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-center font-bold">
                 {totalWinBetAmount}
               </td>
             </tr>
