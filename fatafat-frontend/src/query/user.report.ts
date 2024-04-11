@@ -10,11 +10,11 @@ export function useAllUsersReport() {
   });
 }
 
-export function usebetDetailsByDate(date: string) {
+export function usebetDetailsByDate(id: string) {
   return useQuery({
     queryKey: ["all-bet-details"],
     queryFn: () => {
-      return getBetDetailsByDate(date);
+      return getBetDetailsByDate(id);
     },
   });
 }

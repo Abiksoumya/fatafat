@@ -8,67 +8,76 @@ export default function PattibetDetailsTable() {
   const userId = searchParams.get("userId");
   console.log(date, userId);
 
-  const { data, isFetched } = usebetDetailsByDate(date);
+  const { data, isFetched } = usebetDetailsByDate(userId);
+  const filteredData = data?.data?.filter((item) => item.date === date);
+  const totalBetAmount = filteredData.reduce(
+    (total, item) => total + (item.betPoint || 0),
+    0
+  );
 
-  function filterDataByUserId(data: any, userId: any) {
-    // Filter the data based on the provided userId
-    return data?.data.filter((item) => item.userId === userId);
-  }
+  // Calculate total win bet amount
+  const totalWinBetAmount = filteredData.reduce(
+    (total, item) => total + (item.winBetPoint || 0),
+    0
+  );
 
-  const filteredData = filterDataByUserId(data, userId);
-
-  const uniqueSlots = [...new Set(filteredData?.map((item) => item.slot))];
-  const slotToTotalBetMap = new Map();
-  filteredData?.forEach((item) => {
-    item.numbers.forEach((number) => {
-      slotToTotalBetMap.set(
-        number.slot,
-        (slotToTotalBetMap.get(number.slot) || 0) + number.totalBetAmount
-      );
-    });
-  });
   console.log(filteredData);
 
   return (
     <>
-      <table className="table-auto w-full">
-        <thead>
-          <tr>
-            <th className="px-6 py-3 border border-gray-200 text-left">
-              UserId
-            </th>
-            {/* Dynamically generate table headers for each unique slot */}
-            {uniqueSlots?.map((slot) => (
-              <th
-                key={slot}
-                className="px-6 py-3 border border-gray-200 text-left"
-              >
-                Slot {slot}
+      <div className="overflow-x-auto p-10">
+        <h2 className="text-2xl ml-1 mb-4">Transaction Data</h2>
+        <table className="min-w-full p-10 divide-gray-200 shadow overflow-hidden sm:rounded-lg">
+          <thead className="bg-gray-50">
+            <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Date
               </th>
-            ))}
-          </tr>
-        </thead>
-        <tbody>
-          {/* Map through data and display user information */}
-          {filteredData?.map((item) => (
-            <tr key={item.userId} className="border border-gray-200">
-              <td className="px-6 py-4 border border-gray-200">
-                {item.userId}
-              </td>
-              {/* Map through unique slots again to display corresponding totalBetAmount */}
-              {uniqueSlots.map((slot) => (
-                <td
-                  key={`${item.userId}-${slot}`}
-                  className="px-6 py-4 border border-gray-200"
-                >
-                  {/* Retrieve totalBetAmount from lookup object or display 0 */}
-                  {slotToTotalBetMap.get(slot) || 0}
-                </td>
-              ))}
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Slot
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Patti
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Bet Amount
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Win Bet Amount
+              </th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {filteredData.map((item, index) => (
+              <tr key={index} className="hover:bg-gray-100">
+                <td className="px-6 py-4 whitespace-nowrap">{item.date}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.slot}</td>
+                <td className="px-6 py-4 whitespace-nowrap">{item.patti}</td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {item.betPoint ? item.betPoint : 0}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {item.winBetPoint ? item.winBetPoint : 0}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+          <tfoot>
+            <tr className="bg-gray-50">
+              <td
+                colSpan="3"
+                className="px-6 py-4 text-right text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Total
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap">{totalBetAmount}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+                {totalWinBetAmount}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </>
   );
 }

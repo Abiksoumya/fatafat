@@ -56,7 +56,7 @@ export const UpdateUserForm = () => {
   return (
     <>
       {isSuccess === true ? (
-        <Success data={{ message: "User Updated" }} />
+        <Success data={{ message: "User Updated", url: "all-users" }} />
       ) : (
         <div className="login-form mt-4">
           <form onSubmit={handleSubmit(submitForm)}>

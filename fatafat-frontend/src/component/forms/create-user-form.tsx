@@ -30,8 +30,7 @@ export const CreateUserForm = () => {
   const [selectedStokez, setSelectedStokez] = useState<any>(null);
   const [filteredStokez, setFilteredStokez] = useState<any>(null);
 
-  console.log("selectedStokez",selectedStokez)
-
+  console.log("selectedStokez", selectedStokez);
 
   const filterStokez = (event: any) => {
     const query = event.query;
@@ -45,10 +44,9 @@ export const CreateUserForm = () => {
     setSelectedStokez(e.value);
   };
 
-
   const message = "Create user";
 
-  const [userId,setUserId] = useState<string>();
+  const [userId, setUserId] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -57,44 +55,37 @@ export const CreateUserForm = () => {
   } = useForm<CreateUserInputs>();
   const { mutate, isSuccess } = useCreateUser();
 
-  console.log("success", isSuccess)
+  console.log("success", isSuccess);
   const { data: allUsers } = useAllUsers();
 
-  const stokezData = allUsers?.data.filter(entry => entry.role === "stokez");
-
+  const stokezData = allUsers?.data.filter((entry) => entry.role === "stokez");
 
   console.log("all user data", stokezData);
 
-  const userData = useUserDetails()
+  const userData = useUserDetails();
 
   useEffect(() => {
-    const tokeData =decodeToken()
-    setUserId(tokeData.userId)
-
-  },[])
-
-      
-
-
-
+    const tokeData = decodeToken();
+    setUserId(tokeData.userId);
+  }, []);
 
   const roles = [
     { name: "Stokez", value: "stokez" },
     { name: "Agent", value: "agent" },
   ];
 
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
-  console.log("control: ", value)
+  console.log("control: ", value);
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     setValue(e.target.value);
     // You can call other setter functions or perform other actions here
-};
+  };
 
-const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
-  mutate(data); // Call the mutate function instead of directly calling createUserMutation.mutate
-};
+  const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
+    mutate(data); // Call the mutate function instead of directly calling createUserMutation.mutate
+  };
 
   // const search = (e: AutoCompleteCompleteEvent) => {
   //   let suggs;
@@ -113,131 +104,127 @@ const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
   // };
 
   return (
-
     <>
-     {
-      isSuccess === true ? <Success data={{ message: "User Create" }}/> :    <div className="login-form mt-4">
-      <form onSubmit={handleSubmit(submitForm)}>
-        <div className="p-field">
-          <div>
-            <label htmlFor="name">Name</label>
-            <InputText
-              id="name"
-              className="mt-2"
-              {...register("name", { required: true })}
-            />
-          </div>
-          <div className="mt-2">
-            <label htmlFor="role">Role</label>
-            <br />
-            <Controller
-              name="role"
-              control={control}
-              rules={{ required: "Role is required." }}
-              render={({ field }) => (
-                <Dropdown
-                  id={field.name}
-                  value={field.value}
-                  optionLabel="name"
-                  placeholder="Select a Role"
-                  options={roles}
-                  focusInputRef={field.ref}
-                  onChange={(e) =>{ field.onChange(e.value),handleChange(e)}}
-                  className="w-full mt-2"
+      {isSuccess === true ? (
+        <Success data={{ message: "User Create", url: "all-users" }} />
+      ) : (
+        <div className="login-form mt-4">
+          <form onSubmit={handleSubmit(submitForm)}>
+            <div className="p-field">
+              <div>
+                <label htmlFor="name">Name</label>
+                <InputText
+                  id="name"
+                  className="mt-2"
+                  {...register("name", { required: true })}
                 />
-              )}
-            />
-          </div>
-          {value === 'agent' ?  
-  <div className="mt-3">
-    <label htmlFor="createdBy">Assign Stokez Id</label>
-    <AutoComplete
-  id="createdBy"
-  value={selectedStokez}
-  onChange={handleStokezSelection}
-  suggestions={filteredStokez}
-  completeMethod={filterStokez}
-  field="name"
-  dropdown
-  className="mt-2 w-full"
-/>
-  </div> 
-  : 
-  null
-}
-          
+              </div>
+              <div className="mt-2">
+                <label htmlFor="role">Role</label>
+                <br />
+                <Controller
+                  name="role"
+                  control={control}
+                  rules={{ required: "Role is required." }}
+                  render={({ field }) => (
+                    <Dropdown
+                      id={field.name}
+                      value={field.value}
+                      optionLabel="name"
+                      placeholder="Select a Role"
+                      options={roles}
+                      focusInputRef={field.ref}
+                      onChange={(e) => {
+                        field.onChange(e.value), handleChange(e);
+                      }}
+                      className="w-full mt-2"
+                    />
+                  )}
+                />
+              </div>
+              {value === "agent" ? (
+                <div className="mt-3">
+                  <label htmlFor="createdBy">Assign Stokez Id</label>
+                  <AutoComplete
+                    id="createdBy"
+                    value={selectedStokez}
+                    onChange={handleStokezSelection}
+                    suggestions={filteredStokez}
+                    completeMethod={filterStokez}
+                    field="name"
+                    dropdown
+                    className="mt-2 w-full"
+                  />
+                </div>
+              ) : null}
 
-          <div className="mt-3">
-            <label htmlFor="margin">Margin</label>
-            <br />
-            <Controller
-              name="margin"
-              control={control}
-              defaultValue={0}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <InputNumber
-                  id="margin"
-                  min={0}
-                  max={100}
-                  value={field.value}
-                  onValueChange={(e) => field.onChange(e.value)}
-                  showButtons
-                  className="mt-2 w-full"
+              <div className="mt-3">
+                <label htmlFor="margin">Margin</label>
+                <br />
+                <Controller
+                  name="margin"
+                  control={control}
+                  defaultValue={0}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <InputNumber
+                      id="margin"
+                      min={0}
+                      max={100}
+                      value={field.value}
+                      onValueChange={(e) => field.onChange(e.value)}
+                      showButtons
+                      className="mt-2 w-full"
+                    />
+                  )}
                 />
-              )}
-            />
-            {errors.margin && (
-              <span className="p-error">{errors.margin.message}</span>
-            )}
-          </div>
-          <div className="p-field mt-4">
-            <label htmlFor="password" className="mb-2">
-              Password
-            </label>
-            <InputText
-              className="mt-2"
-              id="password"
-              type="password"
-              {...register("password", { required: true })}
-            />
-          </div>
+                {errors.margin && (
+                  <span className="p-error">{errors.margin.message}</span>
+                )}
+              </div>
+              <div className="p-field mt-4">
+                <label htmlFor="password" className="mb-2">
+                  Password
+                </label>
+                <InputText
+                  className="mt-2"
+                  id="password"
+                  type="password"
+                  {...register("password", { required: true })}
+                />
+              </div>
 
-          <div className="mt-3">
-            <label htmlFor="balance">Balance</label>
-            <br />
-            <Controller
-              name="balance"
-              control={control}
-              defaultValue={0}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <InputNumber
-                  id="balance"
-                  value={field.value}
-                  onValueChange={(e) => field.onChange(e.value)}
-                  showButtons
-                  className="mt-3 w-full"
+              <div className="mt-3">
+                <label htmlFor="balance">Balance</label>
+                <br />
+                <Controller
+                  name="balance"
+                  control={control}
+                  defaultValue={0}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <InputNumber
+                      id="balance"
+                      value={field.value}
+                      onValueChange={(e) => field.onChange(e.value)}
+                      showButtons
+                      className="mt-3 w-full"
+                    />
+                  )}
                 />
-              )}
+              </div>
+            </div>
+            <Button
+              label="Create User"
+              // onClick={() => {
+              //   formRef.current?.submit();
+              // }}
+              type="submit"
             />
-          </div>
+          </form>
         </div>
-        <Button
-          label="Create User"
-          // onClick={() => {
-          //   formRef.current?.submit();
-          // }}
-          type="submit"
-        />
-      </form>
-    </div>
-      
-      
-    }
+      )}
     </>
-   
-    
   );
 };
 

@@ -14,7 +14,7 @@ export default function UserDetails({ user }: { user: UserProps }) {
     <>
       <Card title="User Details" className="w-full">
         <p>Name: {user?.name}</p>
-        <p>User ID: {user?.id}</p>
+        {/* <p>User ID: {user?.id}</p> */}
         <p>Balance: {user?.balance}</p>
         <p>NTP: {user?.ntp}</p>
         <p>Margin: {Number(user?.margin)}%</p>
