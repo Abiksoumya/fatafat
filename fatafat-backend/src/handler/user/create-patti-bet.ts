@@ -13,12 +13,34 @@ export function createPattiBet() {
     const { cardData, timeSlot, ticketNo } = req.body;
 
     // console.log("req uest data", req.body)
+    let realtimeSlot: any;
     let currentDate = new Date();
-
     // Extract the date portion (YYYY-MM-DD)
     let formattedDate = currentDate.toISOString().split("T")[0];
 
     console.log("", formattedDate);
+    switch (timeSlot) {
+      case "18.30":
+        realtimeSlot = "6.3";
+        break;
+      case "14.00":
+        realtimeSlot = "2";
+        break;
+      case "15.30":
+        realtimeSlot = "3.3";
+        break;
+      case "17.00":
+        realtimeSlot = "5";
+        break;
+      case "20.00":
+        realtimeSlot = "8";
+        break;
+      case "21.30":
+        realtimeSlot = "9.3";
+        break;
+      default:
+        null;
+    }
 
     try {
       // Start transaction
@@ -74,7 +96,7 @@ export function createPattiBet() {
             userId: res.locals.userId,
             patti: patti,
             betPoint: betPoint,
-            slot: timeSlot,
+            slot: realtimeSlot ? realtimeSlot : timeSlot,
             isActive: true,
             status: "pending",
             user: user._id,
