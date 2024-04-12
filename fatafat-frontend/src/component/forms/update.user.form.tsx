@@ -23,8 +23,6 @@ export type UpdateUserInputs = {
 export const UpdateUserForm = () => {
   const { id } = useParams();
 
-  console.log("user id: " + id);
-
   const [userId, setUserId] = useState<string>();
   const {
     register,
@@ -35,13 +33,13 @@ export const UpdateUserForm = () => {
   } = useForm<UpdateUserInputs>();
   const { mutate, isSuccess } = useUpdateUser(id);
   const { data: allUsers } = useAllUsers();
-  const filteredUser = allUsers?.data?.find((user) => user.userId === id);
+  const filteredUser = allUsers?.data?.find((user) => user?.userId === id);
 
   console.log("user filtered: " + filteredUser.userId);
 
   useEffect(() => {
     const tokenData = decodeToken();
-    setUserId(tokenData.userId);
+    setUserId(tokenData?.userId);
   }, []);
 
   const roles = [

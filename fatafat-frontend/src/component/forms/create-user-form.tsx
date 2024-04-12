@@ -35,7 +35,7 @@ export const CreateUserForm = () => {
   const filterStokez = (event: any) => {
     const query = event.query;
     const filteredStokez = stokezData?.filter((stokez: any) => {
-      return stokez.name.toLowerCase().includes(query.toLowerCase());
+      return stokez?.name.toLowerCase().includes(query.toLowerCase());
     });
     setFilteredStokez(filteredStokez);
   };
@@ -58,7 +58,7 @@ export const CreateUserForm = () => {
   console.log("success", isSuccess);
   const { data: allUsers } = useAllUsers();
 
-  const stokezData = allUsers?.data.filter((entry) => entry.role === "stokez");
+  const stokezData = allUsers?.data?.filter((entry) => entry.role === "stokez");
 
   console.log("all user data", stokezData);
 
@@ -66,7 +66,7 @@ export const CreateUserForm = () => {
 
   useEffect(() => {
     const tokeData = decodeToken();
-    setUserId(tokeData.userId);
+    setUserId(tokeData?.userId);
   }, []);
 
   const roles = [
