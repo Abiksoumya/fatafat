@@ -9,10 +9,12 @@ export default function Dashboard() {
   const { data, isFetched, isError } = useUserDetails();
   const navigate = useNavigate();
   const [user, setUser] = useState("");
+
+  console.log("user dataggggg", user);
   useEffect(() => {
     const tokeData = decodeToken();
     console.log("token data", tokeData);
-    setUser(tokeData.role);
+    setUser(tokeData);
   }, []);
 
   const menuItems: MenuItem[] = [
@@ -62,7 +64,7 @@ export default function Dashboard() {
           label: "Transfer Point",
           command: () => navigate("/admin/transfer-point"),
         },
-        ...(user.role === "admin"
+        ...(user?.role === "admin"
           ? [
               {
                 label: "Result",
