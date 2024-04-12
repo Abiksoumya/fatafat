@@ -54,7 +54,7 @@ export async function getAllUsers() {
     return filteredData;
   }
 
-  return data;
+  return data?.data;
 }
 
 export async function getAllUser() {

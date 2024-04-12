@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { http } from "../../helper/http";
 import { useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
-import { decodeToken } from "../../helper/jwt.halper";
 
 interface User {
   id: String;
@@ -29,7 +28,7 @@ export default function AllUsersTable() {
   const [user, setUser] = useState<User>();
   const [show, setShow] = useState(false);
   const client = useQueryClient();
-  console.log(data);
+  console.log("--------------", data);
 
   const navigate = useNavigate();
   const handleEdit = (userId: any) => {

@@ -52,10 +52,7 @@ export default function Dashboard() {
         //   label: "All Point Bets",
         //   command: () => navigate("/all-point-bets"),
         // },
-        {
-          label: "All Patti Bets",
-          command: () => navigate("/admin/all-patti-bets"),
-        },
+
         // {
         //   label: "Adjust Point",
         //   command: () => navigate("/admin/adjust-point"),
@@ -69,6 +66,10 @@ export default function Dashboard() {
               {
                 label: "Result",
                 command: () => navigate("/admin/result"),
+              },
+              {
+                label: "All Patti Bets",
+                command: () => navigate("/admin/all-patti-bets"),
               },
             ]
           : []),

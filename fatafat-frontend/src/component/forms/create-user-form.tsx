@@ -47,6 +47,7 @@ export const CreateUserForm = () => {
   const message = "Create user";
 
   const [userId, setUserId] = useState<string>();
+  const [userRole, setUserRole] = useState<string>();
   const {
     register,
     handleSubmit,
@@ -67,12 +68,14 @@ export const CreateUserForm = () => {
   useEffect(() => {
     const tokeData = decodeToken();
     setUserId(tokeData?.userId);
+    setUserRole(tokeData?.role);
   }, []);
 
   const roles = [
     { name: "Stokez", value: "stokez" },
     { name: "Agent", value: "agent" },
   ];
+  const role = [{ name: "Agent", value: "agent" }];
 
   const [value, setValue] = useState("");
 
@@ -119,29 +122,56 @@ export const CreateUserForm = () => {
                   {...register("name", { required: true })}
                 />
               </div>
-              <div className="mt-2">
-                <label htmlFor="role">Role</label>
-                <br />
-                <Controller
-                  name="role"
-                  control={control}
-                  rules={{ required: "Role is required." }}
-                  render={({ field }) => (
-                    <Dropdown
-                      id={field.name}
-                      value={field.value}
-                      optionLabel="name"
-                      placeholder="Select a Role"
-                      options={roles}
-                      focusInputRef={field.ref}
-                      onChange={(e) => {
-                        field.onChange(e.value), handleChange(e);
-                      }}
-                      className="w-full mt-2"
-                    />
-                  )}
-                />
-              </div>
+              {userRole === "admin" ? (
+                <div className="mt-2">
+                  <label htmlFor="role">Role</label>
+                  <br />
+                  <Controller
+                    name="role"
+                    control={control}
+                    rules={{ required: "Role is required." }}
+                    render={({ field }) => (
+                      <Dropdown
+                        id={field.name}
+                        value={field.value}
+                        optionLabel="name"
+                        placeholder="Select a Role"
+                        options={roles}
+                        focusInputRef={field.ref}
+                        onChange={(e) => {
+                          field.onChange(e.value), handleChange(e);
+                        }}
+                        className="w-full mt-2"
+                      />
+                    )}
+                  />
+                </div>
+              ) : (
+                <div className="mt-2">
+                  <label htmlFor="role">Role</label>
+                  <br />
+                  <Controller
+                    name="role"
+                    control={control}
+                    rules={{ required: "Role is required." }}
+                    render={({ field }) => (
+                      <Dropdown
+                        id={field.name}
+                        value={field.value}
+                        optionLabel="name"
+                        placeholder="Select a Role"
+                        options={role}
+                        focusInputRef={field.ref}
+                        onChange={(e) => {
+                          field.onChange(e.value), handleChange(e);
+                        }}
+                        className="w-full mt-2"
+                      />
+                    )}
+                  />
+                </div>
+              )}
+
               {value === "agent" ? (
                 <div className="mt-3">
                   <label htmlFor="createdBy">Assign Stokez Id</label>
