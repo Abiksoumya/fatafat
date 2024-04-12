@@ -3,7 +3,7 @@ import { Dropdown } from "primereact/dropdown";
 import { Button } from "primereact/button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { InputNumber } from "primereact/inputnumber";
-import { useAllUsers } from "../../query/use-all-users";
+import { useAllUser, useAllUsers } from "../../query/use-all-users";
 import { useEffect, useState } from "react";
 import { decodeToken } from "../../helper/jwt.halper";
 import { useUserDetails } from "../../query/use-user-details";
@@ -32,10 +32,8 @@ export const UpdateUserForm = () => {
     setValue,
   } = useForm<UpdateUserInputs>();
   const { mutate, isSuccess } = useUpdateUser(id);
-  const { data: allUsers } = useAllUsers();
+  const { data: allUsers } = useAllUser();
   const filteredUser = allUsers?.data?.find((user) => user?.userId === id);
-
-  console.log("user filtered: " + filteredUser.userId);
 
   useEffect(() => {
     const tokenData = decodeToken();

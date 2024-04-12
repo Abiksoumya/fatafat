@@ -9,7 +9,7 @@ import {
   AutoComplete,
   AutoCompleteCompleteEvent,
 } from "primereact/autocomplete";
-import { useAllUsers } from "../../query/use-all-users";
+import { useAllUser, useAllUsers } from "../../query/use-all-users";
 import { useEffect, useState } from "react";
 import { decodeToken } from "../../helper/jwt.halper";
 import { useUserDetails } from "../../query/use-user-details";
@@ -56,7 +56,7 @@ export const CreateUserForm = () => {
   const { mutate, isSuccess } = useCreateUser();
 
   console.log("success", isSuccess);
-  const { data: allUsers } = useAllUsers();
+  const { data: allUsers } = useAllUser();
 
   const stokezData = allUsers?.data?.filter((entry) => entry.role === "stokez");
 

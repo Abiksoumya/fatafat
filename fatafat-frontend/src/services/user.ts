@@ -47,10 +47,18 @@ export async function getAllUsers() {
   if (tokeData.role === "stokez") {
     const filteredData = data?.data.filter((item: any) => {
       // Check if the role is "stokez" and userId matches
+
       return item.role === "agent" && item.createdBy === tokeData?.userId;
     });
+
     return filteredData;
   }
+
+  return data;
+}
+
+export async function getAllUser() {
+  const { data } = await http().get("/user/all");
 
   return data;
 }
