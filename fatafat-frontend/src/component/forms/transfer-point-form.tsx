@@ -7,7 +7,7 @@ import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { InputNumber } from "primereact/inputnumber";
 import { useTransferPoint } from "../../mutation/transfer-point";
 import { useEffect, useState } from "react";
-import { useAllUsers } from "../../query/use-all-users";
+import { useAllUser, useAllUsers } from "../../query/use-all-users";
 import Success from "../ui/success";
 import { AutoComplete } from "primereact/autocomplete";
 export type TransferPointFormData = {
@@ -37,7 +37,7 @@ export const TransferPointForm = () => {
     mutate(formData);
   };
 
-  const allUsers = useAllUsers();
+  const allUsers = useAllUser();
 
   const [filteredUsers, setFilteredUsers] = useState<any[]>([]);
   const [inputValue, setInputValue] = useState<string>("");

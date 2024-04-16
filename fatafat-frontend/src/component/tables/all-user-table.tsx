@@ -105,10 +105,10 @@ export default function AllUsersTable() {
           setShow(false);
         }}
       >
-        <Column selectionMode="single" headerStyle={{ width: "3rem" }}></Column>
-        <Column field="userId" header="User Id" filter></Column>
+        <Column selectionMode="single" headerStyle={{ width: "2rem" }}></Column>
+        {/* <Column field="userId" header="User Id" filter></Column> */}
         <Column field="name" header="Name" filter></Column>
-        <Column field="password" header="Password" filter></Column>
+        {/* <Column field="password" header="Password" filter></Column> */}
         <Column
           field="isActive"
           header="Account Status"
@@ -120,12 +120,12 @@ export default function AllUsersTable() {
         <Column field="margin" header="Margin %"></Column>
         <Column field="ntp" header="NTP"></Column>
         <Column field="createdBy" header="Created By"></Column>
-        <Column
+        {/* <Column
           field="createdAt"
           header="Creation Date & Time"
           body={dateTimeTemplate}
-          headerStyle={{ width: "5rem" }}
-        ></Column>
+          headerStyle={{ width: "2rem" }}
+        ></Column> */}
         <Column
           header="Action"
           body={(rowData) => (
@@ -135,7 +135,7 @@ export default function AllUsersTable() {
               onClick={() => handleEdit(rowData.userId)}
             />
           )}
-          style={{ textAlign: "center", width: "6rem" }}
+          style={{ textAlign: "center", width: "3rem" }}
         />
       </DataTable>
     </div>

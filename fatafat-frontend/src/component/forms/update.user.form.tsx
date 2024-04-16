@@ -35,6 +35,8 @@ export const UpdateUserForm = () => {
   const { data: allUsers } = useAllUser();
   const filteredUser = allUsers?.data?.find((user) => user?.userId === id);
 
+  console.log("update", filteredUser);
+
   useEffect(() => {
     const tokenData = decodeToken();
     setUserId(tokenData?.userId);
@@ -73,6 +75,7 @@ export const UpdateUserForm = () => {
                   name="role"
                   control={control}
                   rules={{ required: "Role is required." }}
+                  defaultValue={filteredUser?.role}
                   render={({ field }) => (
                     <Dropdown
                       id={field.name}
@@ -94,7 +97,7 @@ export const UpdateUserForm = () => {
                 <Controller
                   name="margin"
                   control={control}
-                  defaultValue={0}
+                  defaultValue={filteredUser?.margin}
                   rules={{ required: true }}
                   render={({ field }) => (
                     <InputNumber
@@ -131,7 +134,7 @@ export const UpdateUserForm = () => {
                 <Controller
                   name="balance"
                   control={control}
-                  defaultValue={0}
+                  defaultValue={filteredUser?.balance}
                   rules={{ required: true }}
                   render={({ field }) => (
                     <InputNumber
