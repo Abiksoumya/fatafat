@@ -61,6 +61,7 @@ export function declareResult() {
           await User.findByIdAndUpdate(userId, {
             $inc: {
               balance: updatedBetPoint,
+              ntp: -updatedBetPoint * (user.margin ?? 0) * 0.01,
             },
           });
         });
@@ -91,6 +92,7 @@ export function declareResult() {
           await User.findByIdAndUpdate(userId, {
             $inc: {
               balance: updatedBetPoint,
+              ntp: -updatedBetPoint * (user.margin ?? 0) * 0.01,
             },
           });
         });
