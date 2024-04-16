@@ -109,7 +109,7 @@ export function createPattiBet() {
             {
               $inc: {
                 ntp: -betPoint * (user.margin ?? 0) * 0.01,
-                balance: -betPoint,
+                balance: -betPoint + betPoint * (user.margin ?? 0) * 0.01,
               },
             },
             { new: true }

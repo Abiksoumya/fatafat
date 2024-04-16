@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { useAllUser, useAllUsers } from "../../query/use-all-users";
 import Success from "../ui/success";
 import { AutoComplete } from "primereact/autocomplete";
+import { decodeToken } from "../../helper/jwt.halper";
 export type TransferPointFormData = {
   type: String;
   userId: string;
@@ -29,10 +30,23 @@ export const TransferPointForm = () => {
     { name: "Credit", value: "credit" },
     { name: "Debit", value: "debit" },
   ];
+  const [stockzId, setStockzId] = useState(null || "");
+
+  console.log("stockz id ", stockzId);
+
+  useEffect(() => {
+    const tokeData = decodeToken();
+    console.log("token data", tokeData);
+    setStockzId(tokeData);
+  }, []);
 
   const submitForm: SubmitHandler<TransferPointFormData> = (data) => {
-    // console.log("transferMutation data: " + data.point)
-    const formData = { ...data, userId: selectedUserId.userId };
+    const formData = {
+      ...data,
+      stokezId: stockzId.userId,
+      userId: selectedUserId.userId,
+    };
+    console.log("transferMutation data: " + JSON.stringify(formData));
 
     mutate(formData);
   };
