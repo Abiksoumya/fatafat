@@ -1,13 +1,12 @@
 import { Request, Response } from "express";
-import {User} from "../../model/user.modelr"; // Assuming UserModel is your Mongoose model
+import { User } from "../../model/user.modelr"; // Assuming UserModel is your Mongoose model
 import TransactionModel from "../../model/transaction.model"; // Assuming TransactionModel is your Mongoose model
 
 export function transferCreditPointHandler() {
   return async (req: Request, res: Response) => {
     const point = req.body.point;
     const userId = req.body.userId;
-    const stokezId = req.body.userId;
-    
+    const stokezId = req.body.stokezId;
 
     try {
       const sender = await User.findOneAndUpdate(
@@ -16,7 +15,9 @@ export function transferCreditPointHandler() {
         { new: true }
       );
 
-      if (!sender || sender.balance < 0) {
+      console.log(sender);
+
+      if (!sender || sender.balance < point) {
         throw new Error("Insufficient Balance");
       }
 
@@ -25,6 +26,7 @@ export function transferCreditPointHandler() {
         { $inc: { balance: point } },
         { new: true }
       );
+      console.log(receiver);
 
       if (!receiver) {
         throw new Error("Receiver not found");
