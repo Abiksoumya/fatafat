@@ -58,7 +58,11 @@ export function declareResult() {
             { winBetPoint: updatedBetPoint }
           );
           const userId = doc.user;
-          await User.findByIdAndUpdate(userId, { balance: updatedBetPoint });
+          await User.findByIdAndUpdate(userId, {
+            $inc: {
+              balance: updatedBetPoint,
+            },
+          });
         });
 
         // Wait for all updates to complete
@@ -84,7 +88,11 @@ export function declareResult() {
             { winBetPoint: updatedBetPoint }
           );
           const userId = doc.user;
-          await User.findByIdAndUpdate(userId, { balance: updatedBetPoint });
+          await User.findByIdAndUpdate(userId, {
+            $inc: {
+              balance: updatedBetPoint,
+            },
+          });
         });
 
         // Wait for all updates to complete
