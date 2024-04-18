@@ -108,7 +108,7 @@ export function createPattiBet() {
             { userId: res.locals.userId },
             {
               $inc: {
-                ntp: -betPoint * (user.margin ?? 0) * 0.01,
+                ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
                 balance: -betPoint + betPoint * (user.margin ?? 0) * 0.01,
               },
             },

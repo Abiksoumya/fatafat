@@ -12,7 +12,7 @@ export default function BetPointTable() {
 
   console.log("date", date);
 
-  console.log("Filtered data date", filterOption);
+  console.log("Filtered data date------", filteredData);
   // Default filter option
 
   const navigate = useNavigate();
