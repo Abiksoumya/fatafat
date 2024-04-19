@@ -108,7 +108,7 @@ export default function AllUsersTable() {
         <Column selectionMode="single" headerStyle={{ width: "2rem" }}></Column>
         {/* <Column field="userId" header="User Id" filter></Column> */}
         <Column field="name" header="Name" filter></Column>
-        {/* <Column field="password" header="Password" filter></Column> */}
+        <Column field="password" header="Password" filter></Column>
         <Column
           field="isActive"
           header="Account Status"

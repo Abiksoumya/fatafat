@@ -138,7 +138,7 @@ export default function BetPointTable() {
                 <td className="px-6 p-4">{item.userName}</td>
                 <td className="px-6 p-4">{item.betPoint}</td>
                 <td className="px-6 p-4">{item.winPoint}</td>
-                <td className="px-6 p-4">3</td>
+                <td className="px-6 p-4">{item.margin}</td>
                 <td className="px-6 p-4">{item.ntp}</td>
                 <Button
                   label="view"

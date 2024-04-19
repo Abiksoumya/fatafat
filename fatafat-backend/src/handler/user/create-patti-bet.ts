@@ -148,14 +148,15 @@ export function createPattiBet() {
           ]);
 
           if (report === null || dbTime === null || dbTime != time) {
-            console.log("working if block");
+            console.log("working if block", user);
             await ReportHistory.create({
               userId: res.locals.userId,
               userName: user.name,
               user: res.locals.id,
               winPoint: 0,
-              ntp: user.ntp,
+              ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
               betPoint: betPoint,
+              margin: user.margin,
             });
           } else {
             console.log("working else block");
@@ -163,9 +164,10 @@ export function createPattiBet() {
               { user: res.locals.id, date: time },
               {
                 $inc: {
-                  ntp: -betPoint * (stokez.margin ?? 0) * 0.01,
+                  ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
                   patti: patti,
                   betPoint: +betPoint,
+                  margin: user.margin,
                 },
               },
               { new: true } // Return the updated document
