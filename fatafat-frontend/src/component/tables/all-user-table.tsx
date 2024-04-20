@@ -118,7 +118,7 @@ export default function AllUsersTable() {
         <Column field="role" header="Type Of User" filter></Column>
         <Column field="balance" header="Balance"></Column>
         <Column field="margin" header="Margin %"></Column>
-        <Column field="ntp" header="NTP"></Column>
+        {/* <Column field="ntp" header="NTP"></Column> */}
         <Column field="createdBy" header="Created By"></Column>
         {/* <Column
           field="createdAt"

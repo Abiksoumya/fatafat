@@ -57,10 +57,7 @@ export default function Dashboard() {
         //   label: "Adjust Point",
         //   command: () => navigate("/admin/adjust-point"),
         // },
-        {
-          label: "Transfer Point",
-          command: () => navigate("/admin/transfer-point"),
-        },
+
         ...(user?.role === "admin"
           ? [
               {
@@ -70,6 +67,10 @@ export default function Dashboard() {
               {
                 label: "All Patti Bets",
                 command: () => navigate("/admin/all-patti-bets"),
+              },
+              {
+                label: "Transfer Point",
+                command: () => navigate("/admin/transfer-point"),
               },
             ]
           : []),
