@@ -14,11 +14,15 @@ export function createPattiBet() {
 
     // console.log("req uest data", req.body)
     let realtimeSlot: any;
-    let currentDate = new Date();
-    // Extract the date portion (YYYY-MM-DD)
-    let formattedDate = currentDate.toISOString().split("T")[0];
+    const getCurrentDate = (): string => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = (today.getMonth() + 1).toString().padStart(2, "0");
+      const day = today.getDate().toString().padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    };
 
-    console.log("", formattedDate);
+    console.log("", getCurrentDate());
     switch (timeSlot) {
       case "18.30":
         realtimeSlot = "6.3";
@@ -53,6 +57,7 @@ export function createPattiBet() {
         // console.log("patti point: " + patti, betPoint)
 
         const user = await User.findOne({ userId: res.locals.userId });
+        console.log("user: " + user);
 
         if (!user || user.balance < betPoint) {
           throw new Error("Insufficient Balance");
@@ -70,21 +75,10 @@ export function createPattiBet() {
         let time: any = null;
         if (report.length > 0) {
           report.forEach((item) => {
-            dbTime = item.timestamp.toISOString().split("T")[0];
-            const times = new Date();
-            const formattedTime = times.toLocaleTimeString("en-US", {
-              hour: "numeric",
-              minute: "numeric",
-              hour12: true,
-            });
+            dbTime = item.date;
+            const times = getCurrentDate();
 
-            console.log(
-              "Report History111111111111",
-              res.locals.id,
-              formattedTime
-            );
-
-            time = times.toISOString().split("T")[0];
+            time = times;
           });
         }
         // console.log("Report History111111111111",res.locals.id,times)
@@ -100,7 +94,8 @@ export function createPattiBet() {
             isActive: true,
             status: "pending",
             user: user._id,
-            date: formattedDate,
+            date: getCurrentDate(),
+            createdBy: user.createdBy,
           });
 
           // Update user ntp and decrease balance
@@ -156,6 +151,7 @@ export function createPattiBet() {
               winPoint: 0,
               ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
               betPoint: betPoint,
+              date: getCurrentDate(),
               margin: user.margin,
             });
           } else {
@@ -167,7 +163,7 @@ export function createPattiBet() {
                   ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
                   patti: patti,
                   betPoint: +betPoint,
-                  margin: user.margin,
+                  // margin: user.margin,
                 },
               },
               { new: true } // Return the updated document

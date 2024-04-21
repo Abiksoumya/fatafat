@@ -24,7 +24,7 @@ const reportHistorySchema: Schema<ReportHistoryDocument> = new Schema({
   betPoint: Number,
   winPoint: Number,
   margin: Number,
-  date: { type: String, default: () => new Date().toISOString().split("T")[0] },
+  date: String,
   timestamp: { type: Date, default: Date.now },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

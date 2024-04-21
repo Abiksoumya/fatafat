@@ -11,6 +11,7 @@ interface IPattiBet extends Document {
   slot: number;
   reward: number;
   date: string;
+  createdBy: string;
   timestamp: Date;
   status: string;
   user: Types.ObjectId;
@@ -27,6 +28,7 @@ const pattiBetSchema: Schema<IPattiBet> = new Schema({
   slot: Number,
   reward: { type: Number, default: 0 },
   date: String,
+  createdBy: String,
   timestamp: { type: Date, default: Date.now },
   status: String,
   user: {

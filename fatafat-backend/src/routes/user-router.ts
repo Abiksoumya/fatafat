@@ -29,6 +29,7 @@ userRouter.post("/create-super-admin", createSuperAdmin());
 userRouter.post("/login", loginUserHandler());
 userRouter.get("/allResult", getResultsHandler());
 userRouter.get("/reports", getAllReport());
+userRouter.post("/declare", declareResult());
 
 userRouter.use(verifyUser());
 //userRouter.use(verifyStokez());
@@ -47,7 +48,6 @@ userRouter.post("/adjust-point", adjustCreditPointHandler());
 userRouter.post("/transfer-point", transferCreditPointHandler());
 userRouter.post("/point-bet", createPointBet());
 userRouter.post("/patti-bet", createPattiBet());
-userRouter.post("/declare", declareResult());
 userRouter.get("/getPattiByUser", getBetPattiByUser());
 userRouter.get("/getPointByUser", getPointByUser());
 userRouter.get("/getPointByDate/:id", getPointByDate());
