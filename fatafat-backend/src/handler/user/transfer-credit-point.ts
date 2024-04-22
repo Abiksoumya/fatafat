@@ -7,47 +7,88 @@ export function transferCreditPointHandler() {
     const point = req.body.point;
     const userId = req.body.userId;
     const stokezId = req.body.stokezId;
+    const transactionType = req.body.transactionType;
+
+    console.log("transaction type: " + transactionType);
 
     try {
-      const sender = await User.findOneAndUpdate(
-        { userId: stokezId },
-        { $inc: { balance: -point } },
-        { new: true }
-      );
+      if (transactionType === "Debit") {
+        console.log("transaction--------------------");
+        const sender = await User.findOneAndUpdate(
+          { userId: stokezId },
+          { $inc: { balance: point } },
+          { new: true }
+        );
 
-      console.log(sender);
+        if (!sender || sender.balance < point) {
+          throw new Error("Insufficient Balance");
+        }
+        const receiver = await User.findOneAndUpdate(
+          { userId: userId },
+          { $inc: { balance: -point } },
+          { new: true }
+        );
+        console.log(receiver);
 
-      if (!sender || sender.balance < point) {
-        throw new Error("Insufficient Balance");
+        if (!receiver) {
+          throw new Error("Receiver not found");
+        }
+        await TransactionModel.create([
+          {
+            userId: stokezId,
+            point: point,
+            balance: sender.balance,
+            type: "debit",
+            otherId: userId,
+          },
+          {
+            userId: userId,
+            point: point,
+            balance: receiver.balance,
+            type: "credit",
+            otherId: stokezId,
+          },
+        ]);
+      } else {
+        const sender = await User.findOneAndUpdate(
+          { userId: stokezId },
+          { $inc: { balance: -point } },
+          { new: true }
+        );
+
+        console.log(sender);
+
+        if (!sender || sender.balance < point) {
+          throw new Error("Insufficient Balance");
+        }
+
+        const receiver = await User.findOneAndUpdate(
+          { userId },
+          { $inc: { balance: point } },
+          { new: true }
+        );
+        console.log(receiver);
+
+        if (!receiver) {
+          throw new Error("Receiver not found");
+        }
+        await TransactionModel.create([
+          {
+            userId: stokezId,
+            point: point,
+            balance: sender.balance,
+            type: "debit",
+            otherId: userId,
+          },
+          {
+            userId: userId,
+            point: point,
+            balance: receiver.balance,
+            type: "credit",
+            otherId: stokezId,
+          },
+        ]);
       }
-
-      const receiver = await User.findOneAndUpdate(
-        { userId },
-        { $inc: { balance: point } },
-        { new: true }
-      );
-      console.log(receiver);
-
-      if (!receiver) {
-        throw new Error("Receiver not found");
-      }
-
-      await TransactionModel.create([
-        {
-          userId: stokezId,
-          point: point,
-          balance: sender.balance,
-          type: "debit",
-          otherId: userId,
-        },
-        {
-          userId: userId,
-          point: point,
-          balance: receiver.balance,
-          type: "credit",
-          otherId: stokezId,
-        },
-      ]);
 
       res.status(200).json({
         message: `Point Transferred from ${stokezId} user to ${userId}`,

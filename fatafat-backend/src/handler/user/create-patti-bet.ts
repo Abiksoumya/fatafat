@@ -115,8 +115,8 @@ export function createPattiBet() {
             { userId: user.createdBy },
             {
               $inc: {
-                balance: -betPoint,
-                ntp: -betPoint * (stokez.margin ?? 0) * 0.01,
+                balance: betPoint * (stokez.margin ?? 0) * 0.01,
+                // ntp: -betPoint * (stokez.margin ?? 0) * 0.01,
               },
             },
             { new: true }
@@ -152,7 +152,7 @@ export function createPattiBet() {
               ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
               betPoint: betPoint,
               date: getCurrentDate(),
-              margin: user.margin,
+              margin: betPoint * (user.margin ?? 0) * 0.01,
             });
           } else {
             console.log("working else block");
@@ -163,7 +163,7 @@ export function createPattiBet() {
                   ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
                   patti: patti,
                   betPoint: +betPoint,
-                  // margin: user.margin,
+                  margin: betPoint * (user.margin ?? 0) * 0.01,
                 },
               },
               { new: true } // Return the updated document
