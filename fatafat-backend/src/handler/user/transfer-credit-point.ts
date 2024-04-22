@@ -7,12 +7,12 @@ export function transferCreditPointHandler() {
     const point = req.body.point;
     const userId = req.body.userId;
     const stokezId = req.body.stokezId;
-    const transactionType = req.body.transactionType;
+    const type = req.body.transactionType;
 
-    console.log("transaction type: " + transactionType);
+    console.log("transaction type: " + type);
 
     try {
-      if (transactionType === "Debit") {
+      if (type === "debit") {
         console.log("transaction--------------------");
         const sender = await User.findOneAndUpdate(
           { userId: stokezId },

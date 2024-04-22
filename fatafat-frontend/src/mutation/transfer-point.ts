@@ -4,24 +4,24 @@ import { TransferPointFormData } from "../component/forms/transfer-point-form";
 import { useState } from "react";
 
 export function useTransferPoint() {
-
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   const mutation = useMutation({
-    mutationFn:(payload:TransferPointFormData) =>{
+    mutationFn: (payload: TransferPointFormData) => {
+      console.log("-----------------------", payload);
       return transferPoint(payload);
     },
-    onSuccess: (data:any) => {
+    onSuccess: (data: any) => {
       setIsSuccess(true);
     },
     onError: (error) => {
       setIsSuccess(false);
     },
-  })
+  });
 
-  const mutate = (data:TransferPointFormData) =>{
+  const mutate = (data: TransferPointFormData) => {
     setIsSuccess(false);
     mutation.mutate(data);
   };
-  return {...mutation, isSuccess, mutate}
+  return { ...mutation, isSuccess, mutate };
 }
