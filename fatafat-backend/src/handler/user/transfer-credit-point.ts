@@ -7,13 +7,12 @@ export function transferCreditPointHandler() {
     const point = req.body.point;
     const userId = req.body.userId;
     const stokezId = req.body.stokezId;
-    const type = req.body.transactionType;
+    const type = req.body.type;
 
     console.log("transaction type: " + type);
 
     try {
       if (type === "debit") {
-        console.log("transaction--------------------");
         const sender = await User.findOneAndUpdate(
           { userId: stokezId },
           { $inc: { balance: point } },
@@ -28,7 +27,7 @@ export function transferCreditPointHandler() {
           { $inc: { balance: -point } },
           { new: true }
         );
-        console.log(receiver);
+        // console.log(receiver);
 
         if (!receiver) {
           throw new Error("Receiver not found");
@@ -56,7 +55,7 @@ export function transferCreditPointHandler() {
           { new: true }
         );
 
-        console.log(sender);
+        // console.log(sender);
 
         if (!sender || sender.balance < point) {
           throw new Error("Insufficient Balance");
@@ -94,7 +93,7 @@ export function transferCreditPointHandler() {
         message: `Point Transferred from ${stokezId} user to ${userId}`,
       });
     } catch (err) {
-      console.log(err);
+      // console.log(err);
       res.status(500).json({
         message: "Server Error",
         error: err.message,
