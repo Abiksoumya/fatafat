@@ -93,6 +93,7 @@ export function declareResult() {
               },
               $inc: {
                 winPoint: updatedBetPoint,
+                margin: updatedBetPoint * (user.margin ?? 0) * 0.01,
               },
             }
           );
