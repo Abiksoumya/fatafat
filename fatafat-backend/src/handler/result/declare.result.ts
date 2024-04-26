@@ -19,8 +19,6 @@ export function declareResult() {
       return `${year}-${month}-${day}`;
     };
 
-    console.log(getCurrentDate());
-
     try {
       const pattiBet = await PattiBet.find({
         patti: winSinglePatti ? winSinglePatti : winThreePatti,
@@ -28,10 +26,7 @@ export function declareResult() {
         date: getCurrentDate(),
       });
 
-      console.log("patti data", pattiBet);
-
-      const userIds = [...new Set(pattiBet.map((item) => item.createdBy))];
-      console.log("all user who bet on this patti", userIds);
+      const userIds = [...new Set(pattiBet.map((item) => item))];
 
       const users = await User.find({ userId: { $in: userIds } });
 
@@ -56,9 +51,7 @@ export function declareResult() {
         });
         // console.log("patti data get by single patti", singlepatti);
         const updatePromises = singlepatti.map(async (doc) => {
-          console.log("doc bet point", doc);
           const updatedBetPoint = doc.betPoint * 9;
-          console.log("doc bet point", updatedBetPoint);
 
           await PattiBet.updateOne(
             { _id: doc._id },
@@ -85,20 +78,19 @@ export function declareResult() {
             },
             { new: true }
           );
-          const report = await ReportHistory.findOneAndUpdate(
-            { date: getCurrentDate() },
+
+          await ReportHistory.updateMany(
+            { date: getCurrentDate(), userId: user.userId },
             {
               $set: {
                 ntp: user.ntp,
               },
               $inc: {
                 winPoint: updatedBetPoint,
-                margin: updatedBetPoint * (user.margin ?? 0) * 0.01,
               },
-            }
+            },
+            { multi: true }
           );
-          console.log("report: " + report);
-          return updatedBetPoint;
         });
 
         // Wait for all updates to complete
@@ -124,8 +116,6 @@ export function declareResult() {
           const userId = doc.user;
           const user = await User.findOne({ _id: userId });
 
-          console.log("UpdatedBetPoint for three patti: " + user);
-
           await User.findByIdAndUpdate(userId, {
             $inc: {
               balance: updatedBetPoint,
@@ -143,8 +133,8 @@ export function declareResult() {
             },
             { new: true }
           );
-          const report = await ReportHistory.findOneAndUpdate(
-            { date: getCurrentDate() },
+          await ReportHistory.updateMany(
+            { date: getCurrentDate(), userId: user.userId },
             {
               $set: {
                 ntp: user.ntp,
@@ -152,9 +142,9 @@ export function declareResult() {
               $inc: {
                 winPoint: updatedBetPoint,
               },
-            }
+            },
+            { multi: true }
           );
-          console.log("report: " + report);
 
           return updatedBetPoint;
         });
@@ -180,49 +170,6 @@ export function declareResult() {
         });
 
         // Credit commission to stokez
-        users.forEach(async (user) => {
-          const stokezUpdate = await User.findOneAndUpdate(
-            { userId: user.createdBy },
-            {
-              $inc: {
-                balance: updatedBetPoint * (user.margin ?? 0) * 0.01,
-                ntp: updatedBetPoint * (user.margin ?? 0) * 0.01,
-              },
-            },
-            { new: true }
-          );
-          console.log(`Processing user:updatedBetPoint`, updatedBetPoint);
-          await Transaction.create([
-            {
-              userId: res.locals.userId,
-              otherId: user.userId ?? "God",
-              point: updatedBetPoint,
-              balance: user.balance,
-              type: "debit",
-            },
-            {
-              userId: user.userId ?? "",
-              otherId: res.locals.userId,
-              point: updatedBetPoint * (user.margin ?? 0) * 0.01,
-              balance: stokezUpdate?.balance,
-              type: "credit",
-            },
-          ]);
-
-          console.log("Process", updatedBetPoint);
-
-          // await ReportHistory.findOneAndUpdate(
-          //   { date: getCurrentDate() },
-          //   {
-          //     $set: {
-          //       ntp: user.ntp,
-          //     },
-          //     $inc: {
-          //       winPoint: updatedBetPoint,
-          //     },
-          //   }
-          // );
-        });
 
         await session.commitTransaction();
         session.endSession();
