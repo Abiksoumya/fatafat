@@ -54,7 +54,9 @@ export function declareResult() {
 
           await PattiBet.updateOne(
             { _id: doc._id },
-            { winBetPoint: updatedBetPoint }
+            {
+              $inc: { winBetPoint: updatedBetPoint },
+            }
           );
           const userId = doc.user;
           const user = await User.findOne({ _id: userId });
@@ -111,7 +113,9 @@ export function declareResult() {
           const updatedBetPoint = doc.betPoint * 100;
           await PattiBet.updateOne(
             { _id: doc._id },
-            { winBetPoint: updatedBetPoint }
+            {
+              $inc: { winBetPoint: updatedBetPoint },
+            }
           );
           const userId = doc.user;
           const user = await User.findOne({ _id: userId });
