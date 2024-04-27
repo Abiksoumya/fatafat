@@ -37,7 +37,6 @@ export function declareResult() {
       // if (!stokez) {
       //   throw new Error("Stokez user not found");
       // }
-      let updatedBetPoint = 0;
 
       if (winSinglePatti) {
         const singlepatti = await PattiBet.find({
@@ -64,28 +63,29 @@ export function declareResult() {
           await User.findByIdAndUpdate(userId, {
             $inc: {
               balance: updatedBetPoint,
-              ntp:
-                updatedBetPoint - updatedBetPoint * (user.margin ?? 0) * 0.01,
+              ntp: -updatedBetPoint,
             },
           });
-          await User.findOneAndUpdate(
-            { userId: user.createdBy },
-            {
-              $inc: {
-                balance: updatedBetPoint * (user.margin ?? 0) * 0.01,
-                ntp: updatedBetPoint * (user.margin ?? 0) * 0.01,
-              },
-            },
-            { new: true }
-          );
+          // await User.findOneAndUpdate(
+          //   { userId: user.createdBy },
+          //   {
+          //     $inc: {
+          //       balance: updatedBetPoint * (user.margin ?? 0) * 0.01,
+          //       ntp: updatedBetPoint * (user.margin ?? 0) * 0.01,
+          //     },
+          //   },
+          //   { new: true }
+          // );
 
           await ReportHistory.updateMany(
             { date: getCurrentDate(), userId: user.userId },
             {
-              $set: {
-                ntp: user.ntp,
-              },
+              // $set: {
+              //   ntp: user.ntp,
+              // },
               $inc: {
+                margin: updatedBetPoint * (user.margin ?? 0) * 0.01,
+                ntp: -updatedBetPoint,
                 winPoint: updatedBetPoint,
               },
             },
@@ -119,27 +119,29 @@ export function declareResult() {
           await User.findByIdAndUpdate(userId, {
             $inc: {
               balance: updatedBetPoint,
-              ntp:
-                updatedBetPoint - updatedBetPoint * (user.margin ?? 0) * 0.01,
+              ntp: -updatedBetPoint,
             },
           });
-          await User.findOneAndUpdate(
-            { userId: user.createdBy },
-            {
-              $inc: {
-                balance: updatedBetPoint * (user.margin ?? 0) * 0.01,
-                ntp: updatedBetPoint * (user.margin ?? 0) * 0.01,
-              },
-            },
-            { new: true }
-          );
+          // await User.findOneAndUpdate(
+          //   { userId: user.createdBy },
+          //   {
+          //     $inc: {
+          //       balance: updatedBetPoint * (user.margin ?? 0) * 0.01,
+          //       ntp: updatedBetPoint * (user.margin ?? 0) * 0.01,
+          //     },
+          //   },
+          //   { new: true }
+          // );
+          console.log("user updated---------", user.ntp);
           await ReportHistory.updateMany(
             { date: getCurrentDate(), userId: user.userId },
             {
-              $set: {
-                ntp: user.ntp,
-              },
+              // $set: {
+              //   ntp: user.ntp,
+              // },
               $inc: {
+                margin: updatedBetPoint * (user.margin ?? 0) * 0.01,
+                ntp: -updatedBetPoint,
                 winPoint: updatedBetPoint,
               },
             },
