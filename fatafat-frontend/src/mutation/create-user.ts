@@ -7,9 +7,10 @@ import { useState } from "react";
 export function useCreateUser() {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
-  
+
   const mutation = useMutation({
     mutationFn: (payload: CreateUserInputs) => {
+      console.log("payload", payload);
       return createNewUser(payload);
     },
     onSuccess: (data: any) => {
@@ -31,14 +32,13 @@ export function useCreateUser() {
   return { ...mutation, isSuccess, mutate };
 }
 
-
-export function useUpdateUser(id:any) {
+export function useUpdateUser(id: any) {
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const navigate = useNavigate();
-  
+
   const mutation = useMutation({
     mutationFn: (payload: CreateUserInputs) => {
-      return updateUser(payload,id);
+      return updateUser(payload, id);
     },
     onSuccess: (data: any) => {
       console.log("Success data:", data);

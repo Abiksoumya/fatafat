@@ -56,12 +56,9 @@ export const CreateUserForm = () => {
   } = useForm<CreateUserInputs>();
   const { mutate, isSuccess } = useCreateUser();
 
-  console.log("success", isSuccess);
   const { data: allUsers } = useAllUser();
 
   const stokezData = allUsers?.data?.filter((entry) => entry.role === "stokez");
-
-  console.log("all user data", stokezData);
 
   const userData = useUserDetails();
 
@@ -79,15 +76,17 @@ export const CreateUserForm = () => {
 
   const [value, setValue] = useState("");
 
-  console.log("control: ", value);
-
   const handleChange = (e: any) => {
     setValue(e.target.value);
     // You can call other setter functions or perform other actions here
   };
 
   const submitForm: SubmitHandler<CreateUserInputs> = (data) => {
-    mutate(data); // Call the mutate function instead of directly calling createUserMutation.mutate
+    const formData = {
+      ...data, // Spread existing data from the form
+      createdBy: selectedStokez.userId, // Add the createdBy variable with its value
+    };
+    mutate(formData); // Call the mutate function instead of directly calling createUserMutation.mutate
   };
 
   // const search = (e: AutoCompleteCompleteEvent) => {
