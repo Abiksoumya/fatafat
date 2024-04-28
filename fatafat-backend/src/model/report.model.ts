@@ -12,6 +12,7 @@ interface ReportHistoryDocument extends Document {
   timestamp: Date;
   margin: number;
   date: string;
+  stockId: string;
   user: Types.ObjectId;
 }
 
@@ -25,6 +26,7 @@ const reportHistorySchema: Schema<ReportHistoryDocument> = new Schema({
   winPoint: Number,
   margin: Number,
   date: String,
+  stockId: String,
   timestamp: { type: Date, default: Date.now },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });

@@ -38,10 +38,7 @@ export default function AllTransactionsTable() {
         type="button"
         label="Export Excel"
         onClick={() =>
-          downloadCSV(
-            data?.data,
-            `all-transaction${new Date().toLocaleDateString()}`
-          )
+          downloadCSV(data, `all-transaction${new Date().toLocaleDateString()}`)
         }
       />
     </div>
@@ -56,11 +53,12 @@ export default function AllTransactionsTable() {
       <DataTable
         header={header}
         virtualScrollerOptions={{ lazy: true }}
-        value={data?.data}
+        value={data}
         paginator
         rows={50}
         rowsPerPageOptions={[50, 100, 200, 500]}
-        tableStyle={{ minWidth: "50rem" }}>
+        tableStyle={{ minWidth: "50rem" }}
+      >
         <Column field="userId" header="User Id" filter></Column>
         <Column field="type" header="Transaction Type" filter></Column>
         <Column field="point" header="Point" filter></Column>
@@ -73,7 +71,8 @@ export default function AllTransactionsTable() {
           field="createdAt"
           header="Creation Date & Time"
           filterElement={dateFilterTemplate}
-          body={dateTimeTemplate}></Column>
+          body={dateTimeTemplate}
+        ></Column>
       </DataTable>
     </div>
   );

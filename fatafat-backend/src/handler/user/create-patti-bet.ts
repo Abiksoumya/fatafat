@@ -57,7 +57,7 @@ export function createPattiBet() {
         // console.log("patti point: " + patti, betPoint)
 
         const user = await User.findOne({ userId: res.locals.userId });
-        console.log("user: " + user);
+        console.log("user1111111111: " + user);
 
         if (!user || user.balance < betPoint) {
           throw new Error("Insufficient Balance");
@@ -152,6 +152,7 @@ export function createPattiBet() {
               ntp: betPoint - betPoint * (user.margin ?? 0) * 0.01,
               betPoint: betPoint,
               date: getCurrentDate(),
+              stockId: user.createdBy,
               margin: betPoint * (user.margin ?? 0) * 0.01,
             });
           } else {

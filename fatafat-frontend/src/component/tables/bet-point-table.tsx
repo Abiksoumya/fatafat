@@ -10,9 +10,8 @@ export default function BetPointTable() {
   const [filterOption, setFilterOption] = useState("today");
   const [date, setDate] = useState("");
 
-  console.log("date", date);
+  console.log("data.................", data);
 
-  console.log("Filtered data date------", filteredData);
   // Default filter option
 
   const navigate = useNavigate();
@@ -22,7 +21,7 @@ export default function BetPointTable() {
   };
 
   useEffect(() => {
-    if (isFetched && data?.data) {
+    if (isFetched && data) {
       const today = new Date();
       const todayDateString = today.toISOString().split("T")[0];
       setDate(todayDateString);
@@ -30,7 +29,7 @@ export default function BetPointTable() {
       let filteredDataArray = [];
       switch (filterOption) {
         case "today":
-          filteredDataArray = data.data.filter((item) =>
+          filteredDataArray = data.filter((item) =>
             item.timestamp.startsWith(todayDateString)
           );
           break;
@@ -38,7 +37,7 @@ export default function BetPointTable() {
           const yesterday = new Date(today);
           yesterday.setDate(yesterday.getDate() - 1);
           const yesterdayDateString = yesterday.toISOString().split("T")[0];
-          filteredDataArray = data.data.filter((item) =>
+          filteredDataArray = data.filter((item) =>
             item.timestamp.startsWith(yesterdayDateString)
           );
           setDate(yesterdayDateString);
@@ -51,7 +50,7 @@ export default function BetPointTable() {
           lastWeekEnd.setDate(lastWeekEnd.getDate() - 1); // Date of the end of last week
           const lastWeekStartString = lastWeekStart.toISOString().split("T")[0];
           const lastWeekEndString = lastWeekEnd.toISOString().split("T")[0];
-          filteredDataArray = data.data.filter((item) => {
+          filteredDataArray = data.filter((item) => {
             const itemDate = new Date(item.timestamp)
               .toISOString()
               .split("T")[0];

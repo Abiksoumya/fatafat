@@ -50,6 +50,7 @@ export async function getAllUsers() {
 
       return item.role === "agent" && item.createdBy === tokeData?.userId;
     });
+    console.log("-------pppppppppppppppp", filteredData);
 
     return filteredData;
   }
@@ -85,8 +86,19 @@ export async function declareResult(paylaod: ResultFormData) {
 }
 
 export async function getReport() {
+  const tokeData = decodeToken();
   const { data } = await http().get("/user/reports");
-  return data;
+  if (tokeData.role === "stokez") {
+    const filteredData = data?.data.filter((item: any) => {
+      // Check if the role is "stokez" and userId matches
+
+      return item.stockId === tokeData?.userId;
+    });
+
+    return filteredData;
+  }
+
+  return data.data;
 }
 
 export async function getBetDetailsByDate(id: string) {

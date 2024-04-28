@@ -8,7 +8,6 @@ export function useTransferPoint() {
 
   const mutation = useMutation({
     mutationFn: (payload: TransferPointFormData) => {
-      console.log("-----------------------", payload);
       return transferPoint(payload);
     },
     onSuccess: (data: any) => {

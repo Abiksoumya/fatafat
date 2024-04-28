@@ -48,15 +48,11 @@ export default function Dashboard() {
           label: "Number Wise Bet Point",
           command: () => navigate("/admin/number-wise-bet-point"),
         },
-        // {
-        //   label: "All Point Bets",
-        //   command: () => navigate("/all-point-bets"),
-        // },
 
-        // {
-        //   label: "Adjust Point",
-        //   command: () => navigate("/admin/adjust-point"),
-        // },
+        {
+          label: "Transfer Point",
+          command: () => navigate("/admin/transfer-point"),
+        },
 
         ...(user?.role === "admin"
           ? [
@@ -67,10 +63,6 @@ export default function Dashboard() {
               {
                 label: "All Patti Bets",
                 command: () => navigate("/admin/all-patti-bets"),
-              },
-              {
-                label: "Transfer Point",
-                command: () => navigate("/admin/transfer-point"),
               },
             ]
           : []),
