@@ -86,7 +86,7 @@ export function declareResult() {
               //   ntp: user.ntp,
               // },
               $inc: {
-                margin: updatedBetPoint * (user.margin ?? 0) * 0.01,
+                // margin: updatedBetPoint * (user.margin ?? 0) * 0.01,
                 ntp: -updatedBetPoint,
                 winPoint: updatedBetPoint,
               },
